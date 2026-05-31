@@ -627,11 +627,13 @@
     <!-- Tab 1: Today's Top 10 -->
     <div id="tab-content-top10">
       <div class="section-label">Today&#x27;s Top Presales</div>
-      <div id="cardList"></div>
-      <div id="errorState" class="error-state" style="display:none;">
-        <div class="icon">&#x1F6AB;</div>
-        <p>Analysis temporarily unavailable &mdash; check back soon.<br/>
-        The server runs a fresh analysis at 6 AM Eastern daily.</p>
+      <div id="cardScrollBox" style="max-height:72vh;overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;">
+        <div id="cardList"></div>
+        <div id="errorState" class="error-state" style="display:none;">
+          <div class="icon">&#x1F6AB;</div>
+          <p>Analysis temporarily unavailable &mdash; check back soon.<br/>
+          The server runs a fresh analysis at 6 AM Eastern daily.</p>
+        </div>
       </div>
     </div>
 
