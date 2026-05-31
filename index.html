@@ -1238,9 +1238,13 @@
     }
 
     // ─── Load Top 10 data ─────────────────────────────────────────────
-    function loadData() {
-      renderSkeletons(10);
-      document.getElementById("lastUpdated").textContent = "Fetching latest analysis...";
+    var _pollTimer = null;
+
+    function loadData(isPolling) {
+      if (!isPolling) {
+        renderSkeletons(5);
+        document.getElementById("lastUpdated").textContent = "Fetching latest analysis...";
+      }
 
       fetch(RAILWAY_URL + "/api/presales", { cache: "no-cache" })
       .then(function(resp) {
@@ -1250,8 +1254,9 @@
       .then(function(data) {
         var presales = data.presales || [];
         var list     = document.getElementById("cardList");
+        var isRefreshing = data.status === "refreshing";
 
-        if (presales.length === 0) {
+        if (presales.length === 0 && !isRefreshing) {
           list.innerHTML = "";
           document.getElementById("errorState").style.display = "block";
           document.getElementById("lastUpdated").textContent =
@@ -1259,12 +1264,26 @@
           return;
         }
 
-        presales.sort(function(a, b) {
-          return (parseInt((b.analysis||{}).score)||0) - (parseInt((a.analysis||{}).score)||0);
-        });
-        list.innerHTML = presales.map(function(p, i) { return renderCard(p, i); }).join("");
-        document.getElementById("lastUpdated").textContent =
-          "Last analyzed: " + formatTimestamp(data.last_updated);
+        if (presales.length > 0) {
+          document.getElementById("errorState").style.display = "none";
+          presales.sort(function(a, b) {
+            return (parseInt((b.analysis||{}).score)||0) - (parseInt((a.analysis||{}).score)||0);
+          });
+          list.innerHTML = presales.map(function(p, i) { return renderCard(p, i); }).join("");
+        }
+
+        if (isRefreshing) {
+          var doneCount = presales.length;
+          document.getElementById("lastUpdated").textContent =
+            "⚡ Analyzing... " + doneCount + " of 5 done — refreshing automatically";
+          // Poll every 30s while refresh is running
+          if (_pollTimer) clearTimeout(_pollTimer);
+          _pollTimer = setTimeout(function() { loadData(true); }, 30000);
+        } else {
+          if (_pollTimer) { clearTimeout(_pollTimer); _pollTimer = null; }
+          document.getElementById("lastUpdated").textContent =
+            "Last analyzed: " + formatTimestamp(data.last_updated);
+        }
 
         var srcBadge = document.getElementById("sourceBadge");
         if (data.source && data.source !== "none") {
@@ -1275,9 +1294,11 @@
       })
       .catch(function(err) {
         console.error("Load failed:", err);
-        document.getElementById("cardList").innerHTML = "";
-        document.getElementById("errorState").style.display = "block";
-        document.getElementById("lastUpdated").textContent = "Could not connect to analysis server.";
+        if (!isPolling) {
+          document.getElementById("cardList").innerHTML = "";
+          document.getElementById("errorState").style.display = "block";
+          document.getElementById("lastUpdated").textContent = "Could not connect to analysis server.";
+        }
       });
     }
 
