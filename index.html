@@ -1242,7 +1242,7 @@
 
     function loadData(isPolling) {
       if (!isPolling) {
-        renderSkeletons(5);
+        renderSkeletons(10);
         document.getElementById("lastUpdated").textContent = "Fetching latest analysis...";
       }
 
@@ -1273,12 +1273,12 @@
         }
 
         if (isRefreshing) {
-          var doneCount = presales.length;
+          var aiDone = presales.filter(function(p) { return p.analysis && p.analysis.ai_analyzed; }).length;
           document.getElementById("lastUpdated").textContent =
-            "⚡ Analyzing... " + doneCount + " of 5 done — refreshing automatically";
-          // Poll every 30s while refresh is running
+            "⚡ AI analyzing... " + aiDone + " of 10 upgraded — updating automatically";
+          // Poll every 10s while refresh is running
           if (_pollTimer) clearTimeout(_pollTimer);
-          _pollTimer = setTimeout(function() { loadData(true); }, 30000);
+          _pollTimer = setTimeout(function() { loadData(true); }, 10000);
         } else {
           if (_pollTimer) { clearTimeout(_pollTimer); _pollTimer = null; }
           document.getElementById("lastUpdated").textContent =
