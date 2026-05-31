@@ -76,6 +76,21 @@
       color: var(--muted);
       margin-top: 10px;
     }
+    .header .last-updated.live {
+      display: inline-block;
+      background: rgba(0,212,255,0.12);
+      border: 1px solid rgba(0,212,255,0.4);
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      animation: livepulse 2s ease-in-out infinite;
+    }
+    @keyframes livepulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.35); }
+      50%       { box-shadow: 0 0 0 6px rgba(0,212,255,0); }
+    }
     .header .source-badge {
       display: inline-block;
       background: var(--bg3);
@@ -1272,19 +1287,20 @@
           list.innerHTML = presales.map(function(p, i) { return renderCard(p, i); }).join("");
         }
 
+        var lu = document.getElementById("lastUpdated");
         if (isRefreshing) {
           var aiDone = presales.filter(function(p) { return p.analysis && p.analysis.ai_analyzed; }).length;
           var now = new Date();
           var timeStr = now.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit"});
-          document.getElementById("lastUpdated").textContent =
-            "⚡ AI analyzing... " + aiDone + " of 10 upgraded — checked " + timeStr;
+          lu.textContent = "⚡ AI analyzing... " + aiDone + " of 10 upgraded — checked " + timeStr;
+          lu.classList.add("live");
           // Poll every 10s while refresh is running
           if (_pollTimer) clearTimeout(_pollTimer);
           _pollTimer = setTimeout(function() { loadData(true); }, 10000);
         } else {
           if (_pollTimer) { clearTimeout(_pollTimer); _pollTimer = null; }
-          document.getElementById("lastUpdated").textContent =
-            "Last analyzed: " + formatTimestamp(data.last_updated);
+          lu.textContent = "Last analyzed: " + formatTimestamp(data.last_updated);
+          lu.classList.remove("live");
         }
 
         var srcBadge = document.getElementById("sourceBadge");
