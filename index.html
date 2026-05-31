@@ -275,6 +275,21 @@
       white-space: nowrap;
     }
 
+    /* Token type badge */
+    .type-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-left: 6px;
+      background: rgba(148,163,184,0.12);
+      color: var(--muted);
+      border: 1px solid rgba(148,163,184,0.25);
+      vertical-align: middle;
+    }
+
     /* Recommendation badge */
     .rec-badge {
       display: inline-block;
@@ -1167,6 +1182,7 @@
                 '<span class="chain-badge">' + esc(chainLabel) + '</span>' +
               '</div>' +
               '<span class="rec-badge rec-' + esc(rec) + '">' + esc(rec) + '</span>' +
+              (a.token_type ? '<span class="type-badge">' + esc(a.token_type) + '</span>' : '') +
               '<div class="verdict">' + esc(a.verdict || "") + '</div>' +
             '</div>' +
           '</div>' +
