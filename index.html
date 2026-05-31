@@ -627,34 +627,48 @@
 
     /* ─── Responsive ─── */
     @media (max-width: 640px) {
-      .flags-row { grid-template-columns: 1fr; gap: 10px; }
-      .card-top { flex-direction: row; padding: 16px 16px 12px; gap: 12px; }
-      .score-circle { width: 64px; height: 64px; font-size: 22px; }
-      .score-circle .score-label { font-size: 11px; }
-      .details-strip { gap: 10px; padding: 10px 16px; }
-      .flags-row { padding: 0 16px 14px; }
-      .expand-toggle { padding: 12px 16px; font-size: 14px; }
-      .analysis-body { padding: 14px 16px; font-size: 14px; }
-      .header { padding: 12px 16px 8px; }
-      .header h1 { font-size: 1.8rem; }
-      .header .subtitle { font-size: 14px; }
-      .header .last-updated { font-size: 13px; }
-      .refresh-btn { font-size: 13px; padding: 7px 16px; margin-top: 8px; }
-      .tab-switcher { width: 100%; justify-content: center; margin: 10px 0 8px; }
-      .tab-btn { font-size: 13px; padding: 9px 14px; }
-      .risk-bar-label { width: 110px; font-size: 13px; }
+      /* ── shrink everything that isn't cards ── */
+      .disclaimer { font-size: 12px; padding: 6px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .header { padding: 8px 16px 6px; }
+      .header h1 { font-size: 1.5rem; }
+      .header .subtitle { font-size: 12px; margin-top: 3px; }
+      .header .last-updated { font-size: 11px; margin-top: 4px; }
+      .refresh-btn { font-size: 12px; padding: 5px 14px; margin-top: 6px; }
+      .tab-switcher { width: 100%; justify-content: center; margin: 8px 0 8px; }
+      .tab-btn { font-size: 12px; padding: 8px 12px; }
+      .section-label { font-size: 12px; margin-bottom: 8px; }
+      .aivm-badge { margin: 4px 0 2px; }
+      .aivm-badge span { font-size: 12px; padding: 5px 12px; }
+      .orca-pod { padding: 8px 12px; }
+      .orca-pod-label { font-size: 11px; margin-bottom: 6px; }
+      .orca-pod-links { gap: 6px; }
+      .orca-pod-links a { font-size: 11px; padding: 4px 8px; }
+      .main { padding: 0 10px; }
+
+      /* ── cards themselves ── */
+      .flags-row { grid-template-columns: 1fr; gap: 8px; padding: 0 14px 12px; }
+      .card-top { padding: 14px 14px 10px; gap: 12px; }
+      .score-circle { width: 60px; height: 60px; font-size: 20px; }
+      .score-circle .score-label { font-size: 10px; }
+      .token-name { font-size: 16px; }
+      .verdict { font-size: 13px; }
+      .details-strip { gap: 8px; padding: 8px 14px; }
+      .expand-toggle { padding: 10px 14px; font-size: 13px; }
+      .analysis-body { padding: 12px 14px; font-size: 13px; }
+      .card-skeleton { padding: 14px; }
+      .rec-badge { font-size: 12px; padding: 4px 12px; }
+      .flags-col h4 { font-size: 12px; }
+      .flags-col ul li { font-size: 13px; }
+
+      /* ── analyze tab ── */
+      .risk-bar-label { width: 110px; font-size: 12px; }
       .analyze-controls { flex-direction: column; align-items: stretch; }
       .analyze-btn { width: 100%; }
-      .token-name { font-size: 17px; }
-      .verdict { font-size: 14px; }
-      .orca-pod { padding: 10px 14px; }
-      .orca-pod-label { font-size: 12px; margin-bottom: 8px; }
-      .orca-pod-links a { font-size: 12px; padding: 5px 10px; }
-      .main { padding: 0 12px; }
-      .aivm-badge { margin: 6px 0 4px; }
-      .aivm-badge span { font-size: 13px; padding: 6px 14px; }
-      .section-label { font-size: 13px; margin-bottom: 10px; }
-      .card-skeleton { padding: 16px; }
+      .free-counter { font-size: 13px; padding: 10px 14px; }
+
+      /* ── error state ── */
+      .error-state .icon { font-size: 2.5rem; }
+      .error-state p { font-size: 15px; }
     }
   </style>
 </head>
