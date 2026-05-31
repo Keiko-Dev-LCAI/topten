@@ -651,14 +651,14 @@
 
       try {
         await fetch(`${RAILWAY_URL}/api/refresh`, { method: "POST" });
-        btn.textContent = "&#x21BB; Refresh started! Check back in ~5 min.";
+        btn.innerHTML = "&#x21BB; Refresh started! Check back in ~5 min.";
       } catch (e) {
         btn.textContent = "&#x21BB; Request Refresh";
         btn.disabled = false;
       }
 
       setTimeout(() => {
-        btn.textContent = "&#x21BB; Request Refresh";
+        btn.innerHTML = "&#x21BB; Request Refresh";
         btn.disabled = false;
       }, 60000);
     }
