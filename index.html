@@ -23,7 +23,10 @@
     }
 
     html, body {
-      height: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -46,12 +49,13 @@
 
     /* ─── Header ─── */
     .header {
+      flex-shrink: 0;
       text-align: center;
-      padding: 40px 24px 24px;
+      padding: 18px 24px 12px;
       background: linear-gradient(180deg, #0d1424 0%, var(--bg) 100%);
     }
     .header h1 {
-      font-size: 3.2rem;
+      font-size: 2.4rem;
       font-weight: 800;
       color: #fff;
       letter-spacing: -0.5px;
@@ -95,16 +99,23 @@
 
     /* ─── Main content ─── */
     .main {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       max-width: 1100px;
+      width: 100%;
       margin: 0 auto;
-      padding: 0 20px 60px;
+      padding: 0 20px;
     }
 
     /* ─── Tab switcher ─── */
     .tab-switcher {
+      flex-shrink: 0;
       display: flex;
       gap: 8px;
-      margin: 28px 0 24px;
+      margin: 14px 0 12px;
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: 40px;
@@ -128,6 +139,7 @@
 
     /* ─── Section label ─── */
     .section-label {
+      flex-shrink: 0;
       font-size: 15px;
       font-weight: 700;
       text-transform: uppercase;
@@ -346,7 +358,7 @@
     .analysis-body.open { display: block; }
 
     /* ─── AIVM badge ─── */
-    .aivm-badge { text-align: center; margin: 40px 0 20px; }
+    .aivm-badge { flex-shrink: 0; text-align: center; margin: 10px 0 8px; }
     .aivm-badge span {
       display: inline-flex;
       align-items: center;
@@ -361,7 +373,7 @@
     }
 
     /* ─── Orca Pod strip ─── */
-    .orca-pod { border-top: 1px solid var(--border); padding: 28px 20px; margin-top: 4px; }
+    .orca-pod { flex-shrink: 0; border-top: 1px solid var(--border); padding: 14px 20px; margin-top: 4px; }
     .orca-pod-label {
       font-size: 14px;
       font-weight: 700;
@@ -369,7 +381,7 @@
       color: var(--muted);
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
     .orca-pod-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
     .orca-pod-links a {
@@ -583,6 +595,31 @@
     .wallet-connect-btn:hover { opacity: 0.85; }
     .wallet-gate-sub { font-size: 14px; color: var(--muted); margin-top: 14px; }
 
+    /* ─── Tab content layout ─── */
+    #tab-content-top10 {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    #tab-content-analyze {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      padding-bottom: 20px;
+    }
+    #cardScrollBox {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
     /* ─── Responsive ─── */
     @media (max-width: 640px) {
       .flags-row { grid-template-columns: 1fr; }
@@ -627,7 +664,7 @@
     <!-- Tab 1: Today's Top 10 -->
     <div id="tab-content-top10">
       <div class="section-label">Today&#x27;s Top Presales</div>
-      <div id="cardScrollBox" style="max-height:72vh;overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;">
+      <div id="cardScrollBox">
         <div id="cardList"></div>
         <div id="errorState" class="error-state" style="display:none;">
           <div class="icon">&#x1F6AB;</div>
@@ -739,7 +776,7 @@
         var content = document.getElementById("tab-content-" + t);
         if (t === tab) {
           btn.classList.add("active");
-          content.style.display = "block";
+          content.style.display = "flex";
         } else {
           btn.classList.remove("active");
           content.style.display = "none";
