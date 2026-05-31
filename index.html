@@ -221,11 +221,11 @@
       border: 3px solid transparent;
     }
     .score-circle .score-label {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-top: 4px;
-      opacity: 0.85;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      opacity: 0.9;
     }
     .score-red    { background: rgba(239,68,68,0.15);  border-color: var(--red);    color: var(--red); }
     .score-yellow { background: rgba(234,179,8,0.15);  border-color: var(--yellow); color: var(--yellow); }
@@ -627,16 +627,34 @@
 
     /* ─── Responsive ─── */
     @media (max-width: 640px) {
-      .flags-row { grid-template-columns: 1fr; }
-      .card-top { flex-direction: row; }
-      .score-circle { width: 72px; height: 72px; font-size: 26px; }
-      .details-strip { gap: 12px; }
-      .header h1 { font-size: 2.4rem; }
-      .tab-switcher { width: 100%; justify-content: center; }
+      .flags-row { grid-template-columns: 1fr; gap: 10px; }
+      .card-top { flex-direction: row; padding: 16px 16px 12px; gap: 12px; }
+      .score-circle { width: 64px; height: 64px; font-size: 22px; }
+      .score-circle .score-label { font-size: 11px; }
+      .details-strip { gap: 10px; padding: 10px 16px; }
+      .flags-row { padding: 0 16px 14px; }
+      .expand-toggle { padding: 12px 16px; font-size: 14px; }
+      .analysis-body { padding: 14px 16px; font-size: 14px; }
+      .header { padding: 12px 16px 8px; }
+      .header h1 { font-size: 1.8rem; }
+      .header .subtitle { font-size: 14px; }
+      .header .last-updated { font-size: 13px; }
+      .refresh-btn { font-size: 13px; padding: 7px 16px; margin-top: 8px; }
+      .tab-switcher { width: 100%; justify-content: center; margin: 10px 0 8px; }
       .tab-btn { font-size: 13px; padding: 9px 14px; }
-      .risk-bar-label { width: 120px; }
+      .risk-bar-label { width: 110px; font-size: 13px; }
       .analyze-controls { flex-direction: column; align-items: stretch; }
       .analyze-btn { width: 100%; }
+      .token-name { font-size: 17px; }
+      .verdict { font-size: 14px; }
+      .orca-pod { padding: 10px 14px; }
+      .orca-pod-label { font-size: 12px; margin-bottom: 8px; }
+      .orca-pod-links a { font-size: 12px; padding: 5px 10px; }
+      .main { padding: 0 12px; }
+      .aivm-badge { margin: 6px 0 4px; }
+      .aivm-badge span { font-size: 13px; padding: 6px 14px; }
+      .section-label { font-size: 13px; margin-bottom: 10px; }
+      .card-skeleton { padding: 16px; }
     }
   </style>
 </head>
@@ -901,7 +919,7 @@
           '<div class="card-top">' +
             '<div class="score-circle ' + scoreClass(score) + '">' +
               '<span>' + score + '</span>' +
-              '<span class="score-label">SCORE</span>' +
+              '<span class="score-label">/ 10</span>' +
             '</div>' +
             '<div class="card-info">' +
               '<div class="token-header">' +
@@ -1110,7 +1128,7 @@
           '<div class="card-top">' +
             '<div class="score-circle ' + scoreClass(score) + '">' +
               '<span>' + score + '</span>' +
-              '<span class="score-label">SCORE</span>' +
+              '<span class="score-label">/ 10</span>' +
             '</div>' +
             '<div class="card-info">' +
               '<div class="token-header">' +
@@ -1185,7 +1203,7 @@
 
         var srcBadge = document.getElementById("sourceBadge");
         if (data.source && data.source !== "none") {
-          var srcMap = { pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
+          var srcMap = { dexscreener: "Data: DexScreener", pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
           srcBadge.textContent = srcMap[data.source] || data.source;
           srcBadge.style.display = "inline-block";
         }
