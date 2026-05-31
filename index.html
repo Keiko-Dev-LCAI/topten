@@ -93,10 +93,12 @@
       border: 1px solid var(--teal);
       color: var(--teal);
       border-radius: 20px;
-      padding: 8px 22px;
-      font-size: 15px;
+      padding: 8px 18px;
+      font-size: 14px;
       cursor: pointer;
-      margin-top: 14px;
+      margin: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
       transition: background 0.2s;
     }
     .refresh-btn:hover { background: rgba(0,212,255,0.1); }
@@ -115,12 +117,20 @@
       padding: 0 20px;
     }
 
-    /* ─── Tab switcher ─── */
-    .tab-switcher {
+    /* ─── Tab row (switcher + refresh) ─── */
+    .tab-row {
       flex-shrink: 0;
       display: flex;
-      gap: 8px;
+      align-items: center;
+      gap: 10px;
       margin: 14px 0 12px;
+    }
+
+    /* ─── Tab switcher ─── */
+    .tab-switcher {
+      display: flex;
+      gap: 8px;
+      margin: 0;
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: 40px;
@@ -633,9 +643,10 @@
       .header h1 { font-size: 1.5rem; }
       .header .subtitle { font-size: 12px; margin-top: 3px; }
       .header .last-updated { font-size: 11px; margin-top: 4px; }
-      .refresh-btn { font-size: 12px; padding: 5px 14px; margin-top: 6px; }
-      .tab-switcher { width: 100%; justify-content: center; margin: 8px 0 8px; }
+      .tab-row { flex-wrap: wrap; margin: 8px 0 8px; gap: 8px; }
+      .tab-switcher { width: 100%; justify-content: center; }
       .tab-btn { font-size: 12px; padding: 8px 12px; }
+      .refresh-btn { font-size: 11px; padding: 5px 12px; width: 100%; text-align: center; }
       .section-label { font-size: 12px; margin-bottom: 8px; }
       .aivm-badge { margin: 4px 0 2px; }
       .aivm-badge span { font-size: 12px; padding: 5px 12px; }
@@ -685,17 +696,18 @@
     <div class="subtitle">Daily AI Presale Analysis &bull; Powered by Lightchain AIVM</div>
     <div class="last-updated" id="lastUpdated">Loading analysis data...</div>
     <div id="sourceBadge" class="source-badge" style="display:none;"></div>
-    <br/>
-    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">&#x21BB; Request Refresh</button>
   </div>
 
   <!-- Main -->
   <div class="main" id="mainContent">
 
-    <!-- Tab switcher -->
-    <div class="tab-switcher">
-      <button class="tab-btn active" id="tab-top10" onclick="switchTab('top10')">&#x1F4CA; Today&#x27;s Top 10</button>
-      <button class="tab-btn" id="tab-analyze" onclick="switchTab('analyze')">&#x1F50D; Analyze Any Presale</button>
+    <!-- Tab switcher + refresh row -->
+    <div class="tab-row">
+      <div class="tab-switcher">
+        <button class="tab-btn active" id="tab-top10" onclick="switchTab('top10')">&#x1F4CA; Today&#x27;s Top 10</button>
+        <button class="tab-btn" id="tab-analyze" onclick="switchTab('analyze')">&#x1F50D; Analyze Any Presale</button>
+      </div>
+      <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">&#x21BB; Refresh</button>
     </div>
 
     <!-- Tab 1: Today's Top 10 -->
