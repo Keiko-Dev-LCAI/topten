@@ -100,6 +100,32 @@
       padding: 0 20px 60px;
     }
 
+    /* ─── Tab switcher ─── */
+    .tab-switcher {
+      display: flex;
+      gap: 8px;
+      margin: 28px 0 24px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 5px;
+      width: fit-content;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { background: var(--teal); color: #000; }
+
     /* ─── Section label ─── */
     .section-label {
       font-size: 15px;
@@ -107,7 +133,7 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
-      margin: 28px 0 16px;
+      margin: 0 0 16px;
     }
 
     /* ─── Error state ─── */
@@ -258,10 +284,7 @@
     }
     .flags-col.green h4 { color: var(--green); }
     .flags-col.red   h4 { color: var(--red); }
-    .flags-col ul {
-      list-style: none;
-      padding: 0;
-    }
+    .flags-col ul { list-style: none; padding: 0; }
     .flags-col ul li {
       font-size: 15px;
       color: var(--muted);
@@ -281,11 +304,7 @@
       padding: 14px 28px 16px;
       border-top: 1px solid var(--border);
     }
-    .detail-item {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
+    .detail-item { display: flex; flex-direction: column; gap: 3px; }
     .detail-label {
       font-size: 12px;
       font-weight: 700;
@@ -293,11 +312,7 @@
       color: var(--muted);
       text-transform: uppercase;
     }
-    .detail-value {
-      font-size: 16px;
-      color: var(--text);
-      font-weight: 500;
-    }
+    .detail-value { font-size: 16px; color: var(--text); font-weight: 500; }
 
     /* Expandable analysis */
     .expand-toggle {
@@ -331,10 +346,7 @@
     .analysis-body.open { display: block; }
 
     /* ─── AIVM badge ─── */
-    .aivm-badge {
-      text-align: center;
-      margin: 40px 0 20px;
-    }
+    .aivm-badge { text-align: center; margin: 40px 0 20px; }
     .aivm-badge span {
       display: inline-flex;
       align-items: center;
@@ -349,11 +361,7 @@
     }
 
     /* ─── Orca Pod strip ─── */
-    .orca-pod {
-      border-top: 1px solid var(--border);
-      padding: 28px 20px;
-      margin-top: 4px;
-    }
+    .orca-pod { border-top: 1px solid var(--border); padding: 28px 20px; margin-top: 4px; }
     .orca-pod-label {
       font-size: 14px;
       font-weight: 700;
@@ -363,12 +371,7 @@
       text-align: center;
       margin-bottom: 16px;
     }
-    .orca-pod-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
+    .orca-pod-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
     .orca-pod-links a {
       color: var(--muted);
       text-decoration: none;
@@ -386,6 +389,200 @@
       background: rgba(0,212,255,0.08);
     }
 
+    /* ─── Analyze tab styles ─── */
+    .free-counter {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--teal);
+    }
+    .free-counter .counter-icon { font-size: 20px; }
+    .free-counter .counter-sub {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .analyze-input-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--card-r);
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    .analyze-textarea {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      padding: 14px 16px;
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.5;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .analyze-textarea:focus { outline: none; border-color: var(--teal); }
+    .analyze-textarea::placeholder { color: var(--muted); }
+
+    .analyze-controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .chain-select {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .chain-select:focus { outline: none; border-color: var(--teal); }
+    .analyze-btn {
+      background: var(--teal);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 11px 28px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .analyze-btn:hover { opacity: 0.85; }
+    .analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Loading state */
+    .loading-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--card-r);
+      padding: 50px 28px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loading-spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid var(--border);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 20px;
+    }
+    .loading-msg { font-size: 17px; color: var(--teal); font-weight: 600; }
+    .loading-sub { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+    /* Risk breakdown */
+    .risk-breakdown { padding: 16px 28px 20px; border-top: 1px solid var(--border); }
+    .risk-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .risk-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .risk-bar-label { font-size: 14px; color: var(--text); width: 160px; flex-shrink: 0; }
+    .risk-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--bg3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .risk-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+    .bar-green  { background: var(--green); }
+    .bar-yellow { background: var(--yellow); }
+    .bar-red    { background: var(--red); }
+    .risk-bar-score {
+      font-size: 13px;
+      font-weight: 700;
+      width: 38px;
+      text-align: right;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    /* Always-visible analysis section */
+    .analysis-full {
+      padding: 18px 28px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg3);
+    }
+    .analysis-full h4 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .analysis-full p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+    /* Analyze error */
+    .analyze-error-card {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: var(--card-r);
+      padding: 24px 28px;
+      color: var(--red);
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    /* Wallet gate */
+    .wallet-gate {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--card-r);
+      padding: 48px 28px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .wallet-gate-icon { font-size: 3rem; margin-bottom: 16px; }
+    .wallet-gate h3 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .wallet-gate p { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+    .wallet-connect-btn {
+      background: var(--teal);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 13px 32px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .wallet-connect-btn:hover { opacity: 0.85; }
+    .wallet-gate-sub { font-size: 14px; color: var(--muted); margin-top: 14px; }
+
     /* ─── Responsive ─── */
     @media (max-width: 640px) {
       .flags-row { grid-template-columns: 1fr; }
@@ -393,6 +590,11 @@
       .score-circle { width: 72px; height: 72px; font-size: 26px; }
       .details-strip { gap: 12px; }
       .header h1 { font-size: 2.4rem; }
+      .tab-switcher { width: 100%; justify-content: center; }
+      .tab-btn { font-size: 13px; padding: 9px 14px; }
+      .risk-bar-label { width: 120px; }
+      .analyze-controls { flex-direction: column; align-items: stretch; }
+      .analyze-btn { width: 100%; }
     }
   </style>
 </head>
@@ -410,21 +612,90 @@
     <div class="last-updated" id="lastUpdated">Loading analysis data...</div>
     <div id="sourceBadge" class="source-badge" style="display:none;"></div>
     <br/>
-    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">↻ Request Refresh</button>
+    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">&#x21BB; Request Refresh</button>
   </div>
 
   <!-- Main -->
   <div class="main" id="mainContent">
-    <div class="section-label">Today&#x27;s Top Presales</div>
-    <div id="cardList">
-      <!-- Skeleton cards while loading -->
+
+    <!-- Tab switcher -->
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="tab-top10" onclick="switchTab('top10')">&#x1F4CA; Today&#x27;s Top 10</button>
+      <button class="tab-btn" id="tab-analyze" onclick="switchTab('analyze')">&#x1F50D; Analyze Any Presale</button>
     </div>
-    <div id="errorState" class="error-state" style="display:none;">
-      <div class="icon">&#x1F6AB;</div>
-      <p>Analysis temporarily unavailable &mdash; check back soon.<br/>
-      The server runs a fresh analysis at 6 AM Eastern daily.</p>
+
+    <!-- Tab 1: Today's Top 10 -->
+    <div id="tab-content-top10">
+      <div class="section-label">Today&#x27;s Top Presales</div>
+      <div id="cardList"></div>
+      <div id="errorState" class="error-state" style="display:none;">
+        <div class="icon">&#x1F6AB;</div>
+        <p>Analysis temporarily unavailable &mdash; check back soon.<br/>
+        The server runs a fresh analysis at 6 AM Eastern daily.</p>
+      </div>
     </div>
-  </div>
+
+    <!-- Tab 2: Analyze Any Presale -->
+    <div id="tab-content-analyze" style="display:none;">
+
+      <!-- Free use counter -->
+      <div class="free-counter" id="freeCounter">
+        <span class="counter-icon">&#x1F42C;</span>
+        <span id="freeCountText">5 free analyses remaining</span>
+        <span class="counter-sub">Free tier &bull; No wallet needed</span>
+      </div>
+
+      <!-- Input card -->
+      <div class="analyze-input-card" id="analyzeInputCard">
+        <textarea
+          id="analyzeInput"
+          class="analyze-textarea"
+          placeholder="Paste a Pinksale URL, DxSale URL, contract address, or project name..."
+          rows="3"
+        ></textarea>
+        <div class="analyze-controls">
+          <select id="chainSelect" class="chain-select">
+            <option value="eth">Ethereum</option>
+            <option value="bsc">BSC</option>
+            <option value="polygon">Polygon</option>
+            <option value="lightchain">Lightchain</option>
+            <option value="other">Other</option>
+          </select>
+          <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">
+            &#x1F50D; Run Deep Analysis
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div id="analyzeLoading" style="display:none;">
+        <div class="loading-card">
+          <div class="loading-spinner"></div>
+          <div class="loading-msg" id="loadingMsg">Fetching presale data...</div>
+          <div class="loading-sub">This can take 60&#x2013;90 seconds &mdash; hang tight</div>
+        </div>
+      </div>
+
+      <!-- Error area -->
+      <div id="analyzeError" style="display:none;"></div>
+
+      <!-- Results area -->
+      <div id="analyzeResult" style="display:none;"></div>
+
+      <!-- Wallet gate (shown when free uses exhausted) -->
+      <div id="walletGate" style="display:none;" class="wallet-gate">
+        <div class="wallet-gate-icon">&#x1F512;</div>
+        <h3>Free analyses used up</h3>
+        <p>You&#x27;ve used all 5 free analyses. Connect your wallet and pay LCAI to unlock more.</p>
+        <button class="wallet-connect-btn" onclick="walletConnectPlaceholder()">
+          Connect Wallet to Continue
+        </button>
+        <div class="wallet-gate-sub">Unlock 10 more analyses for X LCAI</div>
+      </div>
+
+    </div><!-- end tab-content-analyze -->
+
+  </div><!-- end main -->
 
   <!-- AIVM badge -->
   <div class="aivm-badge">
@@ -448,67 +719,83 @@
   </div>
 
   <script>
-    const RAILWAY_URL = "https://web-production-5e7ae.up.railway.app";
+    var RAILWAY_URL    = "https://web-production-5e7ae.up.railway.app";
+    var FREE_USES_KEY  = "topten_free_uses";
+    var FREE_USES_MAX  = 5;
+    var _loadingTimer  = null;
+    var _loadingMsgs   = [
+      "Fetching presale data...",
+      "Checking on-chain contract...",
+      "Running AIVM deep analysis...",
+      "Almost done..."
+    ];
 
-    // ─── Skeleton cards ───────────────────────────────────────────────
-    function renderSkeletons(count) {
-      const list = document.getElementById("cardList");
-      list.innerHTML = "";
-      for (let i = 0; i < count; i++) {
-        list.innerHTML += `
-          <div class="card-skeleton">
-            <div style="display:flex;gap:14px;align-items:flex-start;">
-              <div class="skeleton skel-row tall" style="border-radius:50%;width:64px;height:64px;flex-shrink:0;"></div>
-              <div style="flex:1;">
-                <div class="skeleton skel-row w60"></div>
-                <div class="skeleton skel-row w40"></div>
-                <div class="skeleton skel-row w80"></div>
-              </div>
-            </div>
-            <div style="margin-top:12px;">
-              <div class="skeleton skel-row w80"></div>
-              <div class="skeleton skel-row w60"></div>
-            </div>
-          </div>`;
+    // ─── Tab switching ───────────────────────────────────────────────
+    function switchTab(tab) {
+      ["top10", "analyze"].forEach(function(t) {
+        var btn     = document.getElementById("tab-" + t);
+        var content = document.getElementById("tab-content-" + t);
+        if (t === tab) {
+          btn.classList.add("active");
+          content.style.display = "block";
+        } else {
+          btn.classList.remove("active");
+          content.style.display = "none";
+        }
+      });
+      if (tab === "analyze") updateFreeCounter();
+    }
+
+    // ─── Free use tracking ───────────────────────────────────────────
+    function getFreeUses() {
+      var val = localStorage.getItem(FREE_USES_KEY);
+      if (val === null) {
+        localStorage.setItem(FREE_USES_KEY, String(FREE_USES_MAX));
+        return FREE_USES_MAX;
+      }
+      return Math.max(0, parseInt(val) || 0);
+    }
+
+    function decrementFreeUses() {
+      var u = getFreeUses();
+      if (u > 0) localStorage.setItem(FREE_USES_KEY, String(u - 1));
+    }
+
+    function updateFreeCounter() {
+      var uses = getFreeUses();
+      var txt  = document.getElementById("freeCountText");
+      var sub  = document.querySelector(".free-counter .counter-sub");
+      if (!txt) return;
+      if (uses === 0) {
+        txt.textContent  = "0 free analyses remaining";
+        txt.style.color  = "var(--red)";
+        if (sub) sub.textContent = "Wallet connection required";
+      } else if (uses === 1) {
+        txt.textContent = "1 free analysis remaining";
+        txt.style.color = "var(--yellow)";
+      } else {
+        txt.textContent = uses + " free analyses remaining";
+        txt.style.color = "var(--teal)";
       }
     }
 
-    // ─── Score color ──────────────────────────────────────────────────
-    function scoreClass(score) {
-      if (score >= 8) return "score-green";
-      if (score >= 5) return "score-yellow";
-      return "score-red";
+    // ─── Loading cycle ───────────────────────────────────────────────
+    function startLoadingCycle() {
+      var idx = 0;
+      var el  = document.getElementById("loadingMsg");
+      if (el) el.textContent = _loadingMsgs[0];
+      _loadingTimer = setInterval(function() {
+        idx = (idx + 1) % _loadingMsgs.length;
+        var msgEl = document.getElementById("loadingMsg");
+        if (msgEl) msgEl.textContent = _loadingMsgs[idx];
+      }, 8000);
     }
 
-    function scoreEmoji(score) {
-      if (score >= 8) return "";
-      if (score >= 5) return "";
-      return "";
+    function stopLoadingCycle() {
+      if (_loadingTimer) { clearInterval(_loadingTimer); _loadingTimer = null; }
     }
 
-    // ─── Format date ──────────────────────────────────────────────────
-    function formatDate(iso) {
-      if (!iso) return "N/A";
-      try {
-        const d = new Date(iso);
-        if (isNaN(d)) return iso;
-        return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-      } catch (e) { return iso; }
-    }
-
-    function formatTimestamp(iso) {
-      if (!iso) return "Unknown";
-      try {
-        const d = new Date(iso);
-        if (isNaN(d)) return iso;
-        return d.toLocaleString("en-US", {
-          month: "short", day: "numeric", year: "numeric",
-          hour: "numeric", minute: "2-digit", timeZoneName: "short"
-        });
-      } catch (e) { return iso; }
-    }
-
-    // ─── Sanitize string for HTML ─────────────────────────────────────
+    // ─── Sanitize for HTML ───────────────────────────────────────────
     function esc(str) {
       if (!str) return "";
       return String(str)
@@ -518,152 +805,378 @@
         .replace(/"/g, "&quot;");
     }
 
-    // ─── Render a single card ─────────────────────────────────────────
+    // ─── Score helpers ───────────────────────────────────────────────
+    function scoreClass(score) {
+      if (score >= 8) return "score-green";
+      if (score >= 5) return "score-yellow";
+      return "score-red";
+    }
+
+    // ─── Risk bar ────────────────────────────────────────────────────
+    function riskBar(label, score) {
+      var s   = parseInt(score) || 5;
+      var pct = ((s / 10) * 100).toFixed(0);
+      var cls = s >= 8 ? "bar-green" : s >= 5 ? "bar-yellow" : "bar-red";
+      return (
+        '<div class="risk-bar-row">' +
+          '<span class="risk-bar-label">' + esc(label) + '</span>' +
+          '<div class="risk-bar-track">' +
+            '<div class="risk-bar-fill ' + cls + '" style="width:' + pct + '%"></div>' +
+          '</div>' +
+          '<span class="risk-bar-score">' + s + '/10</span>' +
+        '</div>'
+      );
+    }
+
+    // ─── Render custom analysis result ───────────────────────────────
+    function renderAnalyzeResult(data) {
+      var a          = data.analysis || {};
+      var score      = parseInt(a.score) || 5;
+      var rec        = String(a.recommendation || "WATCH").toUpperCase();
+      var greenFlags = Array.isArray(a.green_flags) ? a.green_flags : [];
+      var redFlags   = Array.isArray(a.red_flags)   ? a.red_flags   : [];
+      var rb         = a.risk_breakdown || {};
+      var chainLabel = String(data.chain || "").length > 0
+                       ? String(data.chain).toUpperCase().slice(0, 12) : "UNKNOWN";
+      var rawId      = "raw-" + Date.now();
+      var rawStr     = esc(JSON.stringify(data.raw_data || {}, null, 2));
+
+      var greenItems = greenFlags.map(function(f) { return "<li>" + esc(f) + "</li>"; }).join("")
+                       || "<li>None noted</li>";
+      var redItems   = redFlags.map(function(f)   { return "<li>" + esc(f) + "</li>"; }).join("")
+                       || "<li>None noted</li>";
+
+      var barsHtml =
+        riskBar("Tokenomics",        rb.tokenomics) +
+        riskBar("Team Transparency", rb.team_transparency) +
+        riskBar("Liquidity Safety",  rb.liquidity_safety) +
+        riskBar("Timing Risk",       rb.timing_risk);
+
+      return (
+        '<div class="card">' +
+          '<div class="card-top">' +
+            '<div class="score-circle ' + scoreClass(score) + '">' +
+              '<span>' + score + '</span>' +
+              '<span class="score-label">SCORE</span>' +
+            '</div>' +
+            '<div class="card-info">' +
+              '<div class="token-header">' +
+                '<span class="token-name">' + esc(data.project_name || "Unknown Project") + '</span>' +
+                '<span class="chain-badge">' + esc(chainLabel) + '</span>' +
+              '</div>' +
+              '<span class="rec-badge rec-' + esc(rec) + '">' + esc(rec) + '</span>' +
+              '<div class="verdict"><strong>' + esc(a.verdict || "") + '</strong></div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="flags-row">' +
+            '<div class="flags-col green">' +
+              '<h4>&#x2705; GREEN FLAGS</h4>' +
+              '<ul>' + greenItems + '</ul>' +
+            '</div>' +
+            '<div class="flags-col red">' +
+              '<h4>&#x26A0;&#xFE0F; RED FLAGS</h4>' +
+              '<ul>' + redItems + '</ul>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="risk-breakdown">' +
+            '<h4 class="risk-title">RISK BREAKDOWN</h4>' +
+            barsHtml +
+          '</div>' +
+
+          '<div class="analysis-full">' +
+            '<h4>FULL ANALYSIS</h4>' +
+            '<p>' + esc(a.analysis || "No detailed analysis available.") + '</p>' +
+          '</div>' +
+
+          '<button class="expand-toggle" id="toggle-' + rawId + '" onclick="toggleAnalysis(\'' + rawId + '\')">' +
+            '<span class="arrow">&#x25BC;</span>' +
+            'Show raw data' +
+          '</button>' +
+          '<div class="analysis-body" id="body-' + rawId + '">' +
+            '<pre style="font-size:13px;white-space:pre-wrap;word-break:break-all;">' + rawStr + '</pre>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    // ─── Run custom analysis ─────────────────────────────────────────
+    function runAnalysis() {
+      var uses = getFreeUses();
+      if (uses <= 0) {
+        document.getElementById("walletGate").style.display = "block";
+        document.getElementById("analyzeInputCard").style.display = "none";
+        return;
+      }
+
+      var input = document.getElementById("analyzeInput").value.trim();
+      if (!input) {
+        alert("Please enter a Pinksale URL, DxSale URL, contract address, or project name.");
+        return;
+      }
+
+      var chain = document.getElementById("chainSelect").value;
+
+      document.getElementById("analyzeLoading").style.display = "block";
+      document.getElementById("analyzeResult").style.display  = "none";
+      document.getElementById("analyzeError").style.display   = "none";
+      document.getElementById("analyzeBtn").disabled = true;
+      startLoadingCycle();
+
+      var controller = new AbortController();
+      var timeout = setTimeout(function() { controller.abort(); }, 180000);
+
+      fetch(RAILWAY_URL + "/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input: input, chain: chain }),
+        signal: controller.signal
+      })
+      .then(function(resp) { return resp.json(); })
+      .then(function(data) {
+        clearTimeout(timeout);
+        stopLoadingCycle();
+        document.getElementById("analyzeLoading").style.display = "none";
+        document.getElementById("analyzeBtn").disabled = false;
+
+        if (!data.success) {
+          var errEl = document.getElementById("analyzeError");
+          errEl.innerHTML =
+            '<div class="analyze-error-card">&#x26A0;&#xFE0F; ' +
+            esc(data.error || "Analysis failed — please try again.") + '</div>';
+          errEl.style.display = "block";
+          return;
+        }
+
+        decrementFreeUses();
+        updateFreeCounter();
+
+        var resultEl = document.getElementById("analyzeResult");
+        resultEl.innerHTML = renderAnalyzeResult(data);
+        resultEl.style.display = "block";
+
+        if (getFreeUses() <= 0) {
+          document.getElementById("walletGate").style.display = "block";
+          document.getElementById("analyzeInputCard").style.display = "none";
+        }
+      })
+      .catch(function(err) {
+        clearTimeout(timeout);
+        stopLoadingCycle();
+        document.getElementById("analyzeLoading").style.display = "none";
+        document.getElementById("analyzeBtn").disabled = false;
+        var msg = err.name === "AbortError"
+          ? "Request timed out — the analysis server may be busy. Please try again."
+          : "Could not connect to analysis server — please try again.";
+        var errEl2 = document.getElementById("analyzeError");
+        errEl2.innerHTML =
+          '<div class="analyze-error-card">&#x26A0;&#xFE0F; ' + esc(msg) + '</div>';
+        errEl2.style.display = "block";
+      });
+    }
+
+    // ─── Wallet connect placeholder ──────────────────────────────────
+    function walletConnectPlaceholder() {
+      console.log("[TopTen] Wallet connect: payment flow placeholder");
+      alert("Wallet payment coming soon! Stay tuned.");
+    }
+
+    // ─── Skeleton cards ──────────────────────────────────────────────
+    function renderSkeletons(count) {
+      var list = document.getElementById("cardList");
+      list.innerHTML = "";
+      for (var i = 0; i < count; i++) {
+        list.innerHTML +=
+          '<div class="card-skeleton">' +
+            '<div style="display:flex;gap:14px;align-items:flex-start;">' +
+              '<div class="skeleton skel-row tall" style="border-radius:50%;width:64px;height:64px;flex-shrink:0;"></div>' +
+              '<div style="flex:1;">' +
+                '<div class="skeleton skel-row w60"></div>' +
+                '<div class="skeleton skel-row w40"></div>' +
+                '<div class="skeleton skel-row w80"></div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="margin-top:12px;">' +
+              '<div class="skeleton skel-row w80"></div>' +
+              '<div class="skeleton skel-row w60"></div>' +
+            '</div>' +
+          '</div>';
+      }
+    }
+
+    // ─── Format dates ────────────────────────────────────────────────
+    function formatDate(iso) {
+      if (!iso) return "N/A";
+      try {
+        var d = new Date(iso);
+        if (isNaN(d)) return iso;
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      } catch (e) { return iso; }
+    }
+
+    function formatTimestamp(iso) {
+      if (!iso) return "Unknown";
+      try {
+        var d = new Date(iso);
+        if (isNaN(d)) return iso;
+        return d.toLocaleString("en-US", {
+          month: "short", day: "numeric", year: "numeric",
+          hour: "numeric", minute: "2-digit", timeZoneName: "short"
+        });
+      } catch (e) { return iso; }
+    }
+
+    // ─── Render a single Top 10 card ─────────────────────────────────
     function renderCard(item, index) {
-      const a = item.analysis || {};
-      const score = parseInt(a.score) || 5;
-      const rec   = (a.recommendation || "WATCH").toUpperCase();
-      const greenFlags = Array.isArray(a.green_flags) ? a.green_flags : [];
-      const redFlags   = Array.isArray(a.red_flags)   ? a.red_flags   : [];
-      const cardId = "card-" + index;
+      var a          = item.analysis || {};
+      var score      = parseInt(a.score) || 5;
+      var rec        = String(a.recommendation || "WATCH").toUpperCase();
+      var greenFlags = Array.isArray(a.green_flags) ? a.green_flags : [];
+      var redFlags   = Array.isArray(a.red_flags)   ? a.red_flags   : [];
+      var cardId     = "card-" + index;
 
-      const greenItems = greenFlags.map(f =>
-        `<li>${esc(f)}</li>`
-      ).join("") || "<li>None noted</li>";
+      var greenItems = greenFlags.map(function(f) { return "<li>" + esc(f) + "</li>"; }).join("")
+                       || "<li>None noted</li>";
+      var redItems   = redFlags.map(function(f)   { return "<li>" + esc(f) + "</li>"; }).join("")
+                       || "<li>None noted</li>";
 
-      const redItems = redFlags.map(f =>
-        `<li>${esc(f)}</li>`
-      ).join("") || "<li>None noted</li>";
-
-      const details = [];
-      if (item.hard_cap   && item.hard_cap   !== "N/A") details.push({ label: "Hard Cap",    val: item.hard_cap });
-      if (item.soft_cap   && item.soft_cap   !== "N/A") details.push({ label: "Soft Cap",    val: item.soft_cap });
-      if (item.total_raised && item.total_raised !== "N/A") details.push({ label: "Raised",  val: item.total_raised });
-      if (item.liquidity_pct && item.liquidity_pct !== "N/A") details.push({ label: "Liquidity", val: item.liquidity_pct });
-      if (item.liquidity_lock && item.liquidity_lock !== "N/A") details.push({ label: "Lock",  val: item.liquidity_lock });
+      var details = [];
+      if (item.hard_cap    && item.hard_cap    !== "N/A") details.push({ label: "Hard Cap",    val: item.hard_cap });
+      if (item.soft_cap    && item.soft_cap    !== "N/A") details.push({ label: "Soft Cap",    val: item.soft_cap });
+      if (item.total_raised && item.total_raised !== "N/A") details.push({ label: "Raised",    val: item.total_raised });
+      if (item.liquidity_pct  && item.liquidity_pct  !== "N/A") details.push({ label: "Liquidity", val: item.liquidity_pct });
+      if (item.liquidity_lock && item.liquidity_lock !== "N/A") details.push({ label: "Lock",   val: item.liquidity_lock });
       if (item.end_time) details.push({ label: "Ends", val: formatDate(item.end_time) });
 
-      const detailsHTML = details.map(d =>
-        `<div class="detail-item">
-          <span class="detail-label">${esc(d.label)}</span>
-          <span class="detail-value">${esc(d.val)}</span>
-        </div>`
-      ).join("");
+      var detailsHTML = details.map(function(d) {
+        return (
+          '<div class="detail-item">' +
+            '<span class="detail-label">' + esc(d.label) + '</span>' +
+            '<span class="detail-value">' + esc(d.val) + '</span>' +
+          '</div>'
+        );
+      }).join("");
 
-      const chainLabel = String(item.chain || "").length > 0 ? String(item.chain).toUpperCase().slice(0, 12) : "MULTI";
+      var chainLabel = String(item.chain || "").length > 0
+                       ? String(item.chain).toUpperCase().slice(0, 12) : "MULTI";
 
-      return `
-        <div class="card">
-          <div class="card-top">
-            <div class="score-circle ${scoreClass(score)}">
-              <span>${score}</span>
-              <span class="score-label">SCORE</span>
-            </div>
-            <div class="card-info">
-              <div class="token-header">
-                <span class="token-name">${esc(item.name)}</span>
-                <span class="token-symbol">${esc(item.symbol)}</span>
-                <span class="chain-badge">${esc(chainLabel)}</span>
-              </div>
-              <span class="rec-badge rec-${esc(rec)}">${esc(rec)}</span>
-              <div class="verdict">${esc(a.verdict || "")}</div>
-            </div>
-          </div>
+      return (
+        '<div class="card">' +
+          '<div class="card-top">' +
+            '<div class="score-circle ' + scoreClass(score) + '">' +
+              '<span>' + score + '</span>' +
+              '<span class="score-label">SCORE</span>' +
+            '</div>' +
+            '<div class="card-info">' +
+              '<div class="token-header">' +
+                '<span class="token-name">' + esc(item.name) + '</span>' +
+                '<span class="token-symbol">' + esc(item.symbol) + '</span>' +
+                '<span class="chain-badge">' + esc(chainLabel) + '</span>' +
+              '</div>' +
+              '<span class="rec-badge rec-' + esc(rec) + '">' + esc(rec) + '</span>' +
+              '<div class="verdict">' + esc(a.verdict || "") + '</div>' +
+            '</div>' +
+          '</div>' +
 
-          <div class="flags-row">
-            <div class="flags-col green">
-              <h4>&#x2705; GREEN FLAGS</h4>
-              <ul>${greenItems}</ul>
-            </div>
-            <div class="flags-col red">
-              <h4>&#x26A0;&#xFE0F; RED FLAGS</h4>
-              <ul>${redItems}</ul>
-            </div>
-          </div>
+          '<div class="flags-row">' +
+            '<div class="flags-col green">' +
+              '<h4>&#x2705; GREEN FLAGS</h4>' +
+              '<ul>' + greenItems + '</ul>' +
+            '</div>' +
+            '<div class="flags-col red">' +
+              '<h4>&#x26A0;&#xFE0F; RED FLAGS</h4>' +
+              '<ul>' + redItems + '</ul>' +
+            '</div>' +
+          '</div>' +
 
-          ${detailsHTML ? `<div class="details-strip">${detailsHTML}</div>` : ""}
+          (detailsHTML ? '<div class="details-strip">' + detailsHTML + '</div>' : "") +
 
-          <button class="expand-toggle" id="toggle-${cardId}" onclick="toggleAnalysis('${cardId}')">
-            <span class="arrow">&#x25BC;</span>
-            Full Analysis
-          </button>
-          <div class="analysis-body" id="body-${cardId}">
-            ${esc(a.analysis || "No detailed analysis available.")}
-          </div>
-        </div>`;
+          '<button class="expand-toggle" id="toggle-' + cardId + '" onclick="toggleAnalysis(\'' + cardId + '\')">' +
+            '<span class="arrow">&#x25BC;</span>' +
+            'Full Analysis' +
+          '</button>' +
+          '<div class="analysis-body" id="body-' + cardId + '">' +
+            esc(a.analysis || "No detailed analysis available.") +
+          '</div>' +
+        '</div>'
+      );
     }
 
     // ─── Toggle expand ────────────────────────────────────────────────
     function toggleAnalysis(id) {
-      const body   = document.getElementById("body-" + id);
-      const toggle = document.getElementById("toggle-" + id);
+      var body   = document.getElementById("body-" + id);
+      var toggle = document.getElementById("toggle-" + id);
       if (!body) return;
-      const isOpen = body.classList.contains("open");
+      var isOpen = body.classList.contains("open");
       body.classList.toggle("open", !isOpen);
       toggle.classList.toggle("open", !isOpen);
     }
 
-    // ─── Load data ────────────────────────────────────────────────────
-    async function loadData() {
+    // ─── Load Top 10 data ─────────────────────────────────────────────
+    function loadData() {
       renderSkeletons(10);
       document.getElementById("lastUpdated").textContent = "Fetching latest analysis...";
 
-      try {
-        const resp = await fetch(`${RAILWAY_URL}/api/presales`, { cache: "no-cache" });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const data = await resp.json();
-
-        const presales = data.presales || [];
-        const list = document.getElementById("cardList");
+      fetch(RAILWAY_URL + "/api/presales", { cache: "no-cache" })
+      .then(function(resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        return resp.json();
+      })
+      .then(function(data) {
+        var presales = data.presales || [];
+        var list     = document.getElementById("cardList");
 
         if (presales.length === 0) {
           list.innerHTML = "";
           document.getElementById("errorState").style.display = "block";
-          document.getElementById("lastUpdated").textContent = "No analysis data yet — scheduled for 6 AM Eastern.";
+          document.getElementById("lastUpdated").textContent =
+            "No analysis data yet — scheduled for 6 AM Eastern.";
           return;
         }
 
-        list.innerHTML = presales.map((p, i) => renderCard(p, i)).join("");
-
+        list.innerHTML = presales.map(function(p, i) { return renderCard(p, i); }).join("");
         document.getElementById("lastUpdated").textContent =
           "Last analyzed: " + formatTimestamp(data.last_updated);
 
-        const srcBadge = document.getElementById("sourceBadge");
+        var srcBadge = document.getElementById("sourceBadge");
         if (data.source && data.source !== "none") {
-          const srcMap = { pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
+          var srcMap = { pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
           srcBadge.textContent = srcMap[data.source] || data.source;
           srcBadge.style.display = "inline-block";
         }
-
-      } catch (err) {
+      })
+      .catch(function(err) {
         console.error("Load failed:", err);
         document.getElementById("cardList").innerHTML = "";
         document.getElementById("errorState").style.display = "block";
         document.getElementById("lastUpdated").textContent = "Could not connect to analysis server.";
-      }
+      });
     }
 
     // ─── Trigger manual refresh ───────────────────────────────────────
-    async function triggerRefresh() {
-      const btn = document.getElementById("refreshBtn");
+    function triggerRefresh() {
+      var btn = document.getElementById("refreshBtn");
       btn.disabled = true;
       btn.textContent = "Refresh requested...";
 
-      try {
-        await fetch(`${RAILWAY_URL}/api/refresh`, { method: "POST" });
-        btn.textContent = "↻ Refresh started! Check back in ~5 min.";
-      } catch (e) {
-        btn.textContent = "&#x21BB; Request Refresh";
+      fetch(RAILWAY_URL + "/api/refresh", { method: "POST" })
+      .then(function() {
+        btn.innerHTML = "&#x21BB; Refresh started! Check back in ~5 min.";
+      })
+      .catch(function() {
+        btn.innerHTML = "&#x21BB; Request Refresh";
         btn.disabled = false;
-      }
+      });
 
-      setTimeout(() => {
-        btn.textContent = "↻ Request Refresh";
+      setTimeout(function() {
+        btn.innerHTML = "&#x21BB; Request Refresh";
         btn.disabled = false;
       }, 60000);
     }
 
     // ─── Init ─────────────────────────────────────────────────────────
+    updateFreeCounter();
     loadData();
   </script>
 </body>
