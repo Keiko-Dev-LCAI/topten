@@ -1118,11 +1118,15 @@
                        || "<li>None noted</li>";
 
       var details = [];
-      if (item.hard_cap    && item.hard_cap    !== "N/A") details.push({ label: "Hard Cap",    val: item.hard_cap });
-      if (item.soft_cap    && item.soft_cap    !== "N/A") details.push({ label: "Soft Cap",    val: item.soft_cap });
-      if (item.total_raised && item.total_raised !== "N/A") details.push({ label: "Raised",    val: item.total_raised });
-      if (item.liquidity_pct  && item.liquidity_pct  !== "N/A") details.push({ label: "Liquidity", val: item.liquidity_pct });
-      if (item.liquidity_lock && item.liquidity_lock !== "N/A") details.push({ label: "Lock",   val: item.liquidity_lock });
+      // DexScreener fields
+      if (item.market_cap_usd && item.market_cap_usd !== "N/A") details.push({ label: "Mkt Cap",  val: "$" + Number(item.market_cap_usd).toLocaleString(undefined, {maximumFractionDigits:0}) });
+      if (item.liquidity_usd  && item.liquidity_usd  !== "N/A") details.push({ label: "Liquidity", val: "$" + Number(item.liquidity_usd).toLocaleString(undefined, {maximumFractionDigits:0}) });
+      if (item.volume_24h     && item.volume_24h     !== "N/A") details.push({ label: "Vol 24h",  val: "$" + Number(item.volume_24h).toLocaleString(undefined, {maximumFractionDigits:0}) });
+      if (item.price_change_24h && item.price_change_24h !== "N/A") details.push({ label: "24h Chg", val: item.price_change_24h });
+      if (item.age_hours && item.age_hours !== "N/A") details.push({ label: "Age", val: Number(item.age_hours).toFixed(0) + "h" });
+      // Legacy presale fields
+      if (item.hard_cap    && item.hard_cap    !== "N/A") details.push({ label: "Hard Cap",  val: item.hard_cap });
+      if (item.liquidity_lock && item.liquidity_lock !== "N/A") details.push({ label: "Lock", val: item.liquidity_lock });
       if (item.end_time) details.push({ label: "Ends", val: formatDate(item.end_time) });
 
       var detailsHTML = details.map(function(d) {
