@@ -1259,6 +1259,9 @@
           return;
         }
 
+        presales.sort(function(a, b) {
+          return (parseInt((b.analysis||{}).score)||0) - (parseInt((a.analysis||{}).score)||0);
+        });
         list.innerHTML = presales.map(function(p, i) { return renderCard(p, i); }).join("");
         document.getElementById("lastUpdated").textContent =
           "Last analyzed: " + formatTimestamp(data.last_updated);
