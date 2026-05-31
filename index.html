@@ -1274,8 +1274,10 @@
 
         if (isRefreshing) {
           var aiDone = presales.filter(function(p) { return p.analysis && p.analysis.ai_analyzed; }).length;
+          var now = new Date();
+          var timeStr = now.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit"});
           document.getElementById("lastUpdated").textContent =
-            "⚡ AI analyzing... " + aiDone + " of 10 upgraded — updating automatically";
+            "⚡ AI analyzing... " + aiDone + " of 10 upgraded — checked " + timeStr;
           // Poll every 10s while refresh is running
           if (_pollTimer) clearTimeout(_pollTimer);
           _pollTimer = setTimeout(function() { loadData(true); }, 10000);
