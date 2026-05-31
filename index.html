@@ -410,7 +410,7 @@
     <div class="last-updated" id="lastUpdated">Loading analysis data...</div>
     <div id="sourceBadge" class="source-badge" style="display:none;"></div>
     <br/>
-    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">&#x21BB; Request Refresh</button>
+    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">↻ Request Refresh</button>
   </div>
 
   <!-- Main -->
@@ -651,14 +651,14 @@
 
       try {
         await fetch(`${RAILWAY_URL}/api/refresh`, { method: "POST" });
-        btn.innerHTML = "&#x21BB; Refresh started! Check back in ~5 min.";
+        btn.textContent = "↻ Refresh started! Check back in ~5 min.";
       } catch (e) {
         btn.textContent = "&#x21BB; Request Refresh";
         btn.disabled = false;
       }
 
       setTimeout(() => {
-        btn.innerHTML = "&#x21BB; Request Refresh";
+        btn.textContent = "↻ Request Refresh";
         btn.disabled = false;
       }, 60000);
     }
