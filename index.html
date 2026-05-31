@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Ten — Daily AI Presale Analysis</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0e1a;
+      --bg2:      #111827;
+      --bg3:      #1a2235;
+      --border:   #1e2d45;
+      --teal:     #00d4ff;
+      --teal2:    #00b8d9;
+      --green:    #22c55e;
+      --yellow:   #eab308;
+      --red:      #ef4444;
+      --text:     #e2e8f0;
+      --muted:    #94a3b8;
+      --card-r:   12px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Disclaimer banner ─── */
+    .disclaimer {
+      background: #78350f;
+      color: #fde68a;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 6px 16px;
+      letter-spacing: 0.02em;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      text-align: center;
+      padding: 28px 20px 18px;
+      background: linear-gradient(180deg, #0d1424 0%, var(--bg) 100%);
+    }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      font-size: 13px;
+      color: var(--teal);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .header .last-updated {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .header .source-badge {
+      display: inline-block;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 2px 10px;
+      margin-top: 6px;
+    }
+
+    /* ─── Refresh button ─── */
+    .refresh-btn {
+      background: transparent;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+    .refresh-btn:hover { background: rgba(0,212,255,0.1); }
+    .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ─── Main content ─── */
+    .main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
+
+    /* ─── Section label ─── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin: 20px 0 12px;
+    }
+
+    /* ─── Error state ─── */
+    .error-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .error-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .error-state p { font-size: 15px; line-height: 1.6; }
+
+    /* ─── Skeleton cards ─── */
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg3) 25%, #1f2d42 50%, var(--bg3) 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    .card-skeleton {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--card-r);
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+    .skel-row { height: 14px; margin-bottom: 10px; border-radius: 4px; }
+    .skel-row.w60  { width: 60%; }
+    .skel-row.w40  { width: 40%; }
+    .skel-row.w80  { width: 80%; }
+    .skel-row.w30  { width: 30%; }
+    .skel-row.tall { height: 36px; width: 70px; }
+
+    /* ─── Analysis card ─── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--card-r);
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: #2a3f5f; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px 14px;
+    }
+
+    /* Score circle */
+    .score-circle {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 22px;
+      line-height: 1;
+      border: 3px solid transparent;
+    }
+    .score-circle .score-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+      opacity: 0.85;
+    }
+    .score-red    { background: rgba(239,68,68,0.15);  border-color: var(--red);    color: var(--red); }
+    .score-yellow { background: rgba(234,179,8,0.15);  border-color: var(--yellow); color: var(--yellow); }
+    .score-green  { background: rgba(34,197,94,0.15);  border-color: var(--green);  color: var(--green); }
+
+    .card-info { flex: 1; min-width: 0; }
+
+    .token-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .token-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .token-symbol {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .chain-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(0,212,255,0.12);
+      color: var(--teal);
+      border: 1px solid rgba(0,212,255,0.25);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    /* Recommendation badge */
+    .rec-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
+    .rec-BUY   { background: rgba(34,197,94,0.2);  color: var(--green); border: 1px solid rgba(34,197,94,0.4); }
+    .rec-WATCH { background: rgba(234,179,8,0.2);  color: var(--yellow); border: 1px solid rgba(234,179,8,0.4); }
+    .rec-AVOID { background: rgba(239,68,68,0.2);  color: var(--red);   border: 1px solid rgba(239,68,68,0.4); }
+
+    .verdict {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* Flags section */
+    .flags-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 20px 14px;
+    }
+    .flags-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .flags-col.green h4 { color: var(--green); }
+    .flags-col.red   h4 { color: var(--red); }
+    .flags-col ul {
+      list-style: none;
+      padding: 0;
+    }
+    .flags-col ul li {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 2px 0;
+      line-height: 1.4;
+      position: relative;
+      padding-left: 14px;
+    }
+    .flags-col.green ul li::before { content: ''; position: absolute; left: 0; }
+    .flags-col.red   ul li::before { content: ''; position: absolute; left: 0; }
+
+    /* Presale details strip */
+    .details-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 10px 20px 12px;
+      border-top: 1px solid var(--border);
+    }
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .detail-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .detail-value {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Expandable analysis */
+    .expand-toggle {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 20px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .expand-toggle:hover { color: var(--teal); }
+    .expand-toggle .arrow { transition: transform 0.2s; }
+    .expand-toggle.open .arrow { transform: rotate(180deg); }
+
+    .analysis-body {
+      display: none;
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      background: var(--bg3);
+      border-top: 1px solid var(--border);
+    }
+    .analysis-body.open { display: block; }
+
+    /* ─── AIVM badge ─── */
+    .aivm-badge {
+      text-align: center;
+      margin: 30px 0 16px;
+    }
+    .aivm-badge span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal);
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 20px;
+      padding: 5px 14px;
+    }
+
+    /* ─── Orca Pod strip ─── */
+    .orca-pod {
+      border-top: 1px solid var(--border);
+      padding: 18px 16px;
+      margin-top: 4px;
+    }
+    .orca-pod-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .orca-pod-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .orca-pod-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .orca-pod-links a:hover {
+      color: var(--teal);
+      border-color: var(--teal);
+      background: rgba(0,212,255,0.08);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 560px) {
+      .flags-row { grid-template-columns: 1fr; }
+      .card-top { flex-direction: row; }
+      .score-circle { width: 54px; height: 54px; font-size: 18px; }
+      .details-strip { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    &#9888;&#65039; Not financial advice. DYOR before investing in any presale.
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>&#x1F42C; Top Ten</h1>
+    <div class="subtitle">Daily AI Presale Analysis &bull; Powered by Lightchain AIVM</div>
+    <div class="last-updated" id="lastUpdated">Loading analysis data...</div>
+    <div id="sourceBadge" class="source-badge" style="display:none;"></div>
+    <br/>
+    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()">&#x21BB; Request Refresh</button>
+  </div>
+
+  <!-- Main -->
+  <div class="main" id="mainContent">
+    <div class="section-label">Today&#x27;s Top Presales</div>
+    <div id="cardList">
+      <!-- Skeleton cards while loading -->
+    </div>
+    <div id="errorState" class="error-state" style="display:none;">
+      <div class="icon">&#x1F6AB;</div>
+      <p>Analysis temporarily unavailable &mdash; check back soon.<br/>
+      The server runs a fresh analysis at 6 AM Eastern daily.</p>
+    </div>
+  </div>
+
+  <!-- AIVM badge -->
+  <div class="aivm-badge">
+    <span>&#x26A1; Powered by Lightchain AIVM</span>
+  </div>
+
+  <!-- Orca Pod strip -->
+  <div class="orca-pod">
+    <div class="orca-pod-label">&#x1F42C; More from the Orca Pod</div>
+    <div class="orca-pod-links">
+      <a href="https://smartcontractexplainer.xyz" target="_blank">Smart Contract Explainer</a>
+      <a href="https://emojisandstickers.xyz" target="_blank">Emojis &amp; Stickers</a>
+      <a href="https://orcamail.ai" target="_blank">OrcaMail</a>
+      <a href="https://orcalearn.ai" target="_blank">OrcaLearn</a>
+      <a href="https://orcafiles.ai" target="_blank">OrcaFiles</a>
+      <a href="https://keiko-dev-lcai.github.io/orcaguard/" target="_blank">OrcaGuard</a>
+      <a href="https://orcamint.xyz" target="_blank">OrcaMint</a>
+      <a href="https://keiko-dev-lcai.github.io/orcanode" target="_blank">OrcaNode</a>
+      <a href="https://keiko-dev-lcai.github.io/orcaappbuilder/" target="_blank">OrcaAppBuilder</a>
+    </div>
+  </div>
+
+  <script>
+    const RAILWAY_URL = "https://topten-server-production.up.railway.app";
+
+    // ─── Skeleton cards ───────────────────────────────────────────────
+    function renderSkeletons(count) {
+      const list = document.getElementById("cardList");
+      list.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        list.innerHTML += `
+          <div class="card-skeleton">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div class="skeleton skel-row tall" style="border-radius:50%;width:64px;height:64px;flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div class="skeleton skel-row w60"></div>
+                <div class="skeleton skel-row w40"></div>
+                <div class="skeleton skel-row w80"></div>
+              </div>
+            </div>
+            <div style="margin-top:12px;">
+              <div class="skeleton skel-row w80"></div>
+              <div class="skeleton skel-row w60"></div>
+            </div>
+          </div>`;
+      }
+    }
+
+    // ─── Score color ──────────────────────────────────────────────────
+    function scoreClass(score) {
+      if (score >= 8) return "score-green";
+      if (score >= 5) return "score-yellow";
+      return "score-red";
+    }
+
+    function scoreEmoji(score) {
+      if (score >= 8) return "";
+      if (score >= 5) return "";
+      return "";
+    }
+
+    // ─── Format date ──────────────────────────────────────────────────
+    function formatDate(iso) {
+      if (!iso) return "N/A";
+      try {
+        const d = new Date(iso);
+        if (isNaN(d)) return iso;
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      } catch (e) { return iso; }
+    }
+
+    function formatTimestamp(iso) {
+      if (!iso) return "Unknown";
+      try {
+        const d = new Date(iso);
+        if (isNaN(d)) return iso;
+        return d.toLocaleString("en-US", {
+          month: "short", day: "numeric", year: "numeric",
+          hour: "numeric", minute: "2-digit", timeZoneName: "short"
+        });
+      } catch (e) { return iso; }
+    }
+
+    // ─── Sanitize string for HTML ─────────────────────────────────────
+    function esc(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // ─── Render a single card ─────────────────────────────────────────
+    function renderCard(item, index) {
+      const a = item.analysis || {};
+      const score = parseInt(a.score) || 5;
+      const rec   = (a.recommendation || "WATCH").toUpperCase();
+      const greenFlags = Array.isArray(a.green_flags) ? a.green_flags : [];
+      const redFlags   = Array.isArray(a.red_flags)   ? a.red_flags   : [];
+      const cardId = "card-" + index;
+
+      const greenItems = greenFlags.map(f =>
+        `<li>${esc(f)}</li>`
+      ).join("") || "<li>None noted</li>";
+
+      const redItems = redFlags.map(f =>
+        `<li>${esc(f)}</li>`
+      ).join("") || "<li>None noted</li>";
+
+      const details = [];
+      if (item.hard_cap   && item.hard_cap   !== "N/A") details.push({ label: "Hard Cap",    val: item.hard_cap });
+      if (item.soft_cap   && item.soft_cap   !== "N/A") details.push({ label: "Soft Cap",    val: item.soft_cap });
+      if (item.total_raised && item.total_raised !== "N/A") details.push({ label: "Raised",  val: item.total_raised });
+      if (item.liquidity_pct && item.liquidity_pct !== "N/A") details.push({ label: "Liquidity", val: item.liquidity_pct });
+      if (item.liquidity_lock && item.liquidity_lock !== "N/A") details.push({ label: "Lock",  val: item.liquidity_lock });
+      if (item.end_time) details.push({ label: "Ends", val: formatDate(item.end_time) });
+
+      const detailsHTML = details.map(d =>
+        `<div class="detail-item">
+          <span class="detail-label">${esc(d.label)}</span>
+          <span class="detail-value">${esc(d.val)}</span>
+        </div>`
+      ).join("");
+
+      const chainLabel = String(item.chain || "").length > 0 ? String(item.chain).toUpperCase().slice(0, 12) : "MULTI";
+
+      return `
+        <div class="card">
+          <div class="card-top">
+            <div class="score-circle ${scoreClass(score)}">
+              <span>${score}</span>
+              <span class="score-label">SCORE</span>
+            </div>
+            <div class="card-info">
+              <div class="token-header">
+                <span class="token-name">${esc(item.name)}</span>
+                <span class="token-symbol">${esc(item.symbol)}</span>
+                <span class="chain-badge">${esc(chainLabel)}</span>
+              </div>
+              <span class="rec-badge rec-${esc(rec)}">${esc(rec)}</span>
+              <div class="verdict">${esc(a.verdict || "")}</div>
+            </div>
+          </div>
+
+          <div class="flags-row">
+            <div class="flags-col green">
+              <h4>&#x2705; GREEN FLAGS</h4>
+              <ul>${greenItems}</ul>
+            </div>
+            <div class="flags-col red">
+              <h4>&#x26A0;&#xFE0F; RED FLAGS</h4>
+              <ul>${redItems}</ul>
+            </div>
+          </div>
+
+          ${detailsHTML ? `<div class="details-strip">${detailsHTML}</div>` : ""}
+
+          <button class="expand-toggle" id="toggle-${cardId}" onclick="toggleAnalysis('${cardId}')">
+            <span class="arrow">&#x25BC;</span>
+            Full Analysis
+          </button>
+          <div class="analysis-body" id="body-${cardId}">
+            ${esc(a.analysis || "No detailed analysis available.")}
+          </div>
+        </div>`;
+    }
+
+    // ─── Toggle expand ────────────────────────────────────────────────
+    function toggleAnalysis(id) {
+      const body   = document.getElementById("body-" + id);
+      const toggle = document.getElementById("toggle-" + id);
+      if (!body) return;
+      const isOpen = body.classList.contains("open");
+      body.classList.toggle("open", !isOpen);
+      toggle.classList.toggle("open", !isOpen);
+    }
+
+    // ─── Load data ────────────────────────────────────────────────────
+    async function loadData() {
+      renderSkeletons(10);
+      document.getElementById("lastUpdated").textContent = "Fetching latest analysis...";
+
+      try {
+        const resp = await fetch(`${RAILWAY_URL}/api/presales`, { cache: "no-cache" });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+
+        const presales = data.presales || [];
+        const list = document.getElementById("cardList");
+
+        if (presales.length === 0) {
+          list.innerHTML = "";
+          document.getElementById("errorState").style.display = "block";
+          document.getElementById("lastUpdated").textContent = "No analysis data yet — scheduled for 6 AM Eastern.";
+          return;
+        }
+
+        list.innerHTML = presales.map((p, i) => renderCard(p, i)).join("");
+
+        document.getElementById("lastUpdated").textContent =
+          "Last analyzed: " + formatTimestamp(data.last_updated);
+
+        const srcBadge = document.getElementById("sourceBadge");
+        if (data.source && data.source !== "none") {
+          const srcMap = { pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
+          srcBadge.textContent = srcMap[data.source] || data.source;
+          srcBadge.style.display = "inline-block";
+        }
+
+      } catch (err) {
+        console.error("Load failed:", err);
+        document.getElementById("cardList").innerHTML = "";
+        document.getElementById("errorState").style.display = "block";
+        document.getElementById("lastUpdated").textContent = "Could not connect to analysis server.";
+      }
+    }
+
+    // ─── Trigger manual refresh ───────────────────────────────────────
+    async function triggerRefresh() {
+      const btn = document.getElementById("refreshBtn");
+      btn.disabled = true;
+      btn.textContent = "Refresh requested...";
+
+      try {
+        await fetch(`${RAILWAY_URL}/api/refresh`, { method: "POST" });
+        btn.textContent = "&#x21BB; Refresh started! Check back in ~5 min.";
+      } catch (e) {
+        btn.textContent = "&#x21BB; Request Refresh";
+        btn.disabled = false;
+      }
+
+      setTimeout(() => {
+        btn.textContent = "&#x21BB; Request Refresh";
+        btn.disabled = false;
+      }, 60000);
+    }
+
+    // ─── Init ─────────────────────────────────────────────────────────
+    loadData();
+  </script>
+</body>
+</html>
