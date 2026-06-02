@@ -432,33 +432,9 @@
     }
 
     /* ─── Orca Pod strip ─── */
-    .orca-pod { flex-shrink: 0; border-top: 1px solid var(--border); padding: 14px 20px; margin-top: 4px; }
-    .orca-pod-label {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .orca-pod-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-    .orca-pod-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 15px;
-      padding: 7px 16px;
-      border-radius: 16px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .orca-pod-links a:hover {
-      color: var(--teal);
-      border-color: var(--teal);
-      background: rgba(0,212,255,0.08);
-    }
+    .orca-pod{flex-shrink:0;border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center}
+    .orca-pod a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:700;padding:6px 16px;border:1px solid rgba(0,180,216,0.3);border-radius:20px;transition:all 0.15s}
+    .orca-pod a:hover{background:rgba(0,180,216,0.1)}
 
     /* ─── Analyze tab styles ─── */
     .free-counter {
@@ -694,10 +670,6 @@
       .section-label { font-size: 12px; margin-bottom: 8px; }
       .aivm-badge { margin: 4px 0 2px; }
       .aivm-badge span { font-size: 12px; padding: 5px 12px; }
-      .orca-pod { padding: 8px 12px; }
-      .orca-pod-label { font-size: 11px; margin-bottom: 6px; }
-      .orca-pod-links { gap: 6px; }
-      .orca-pod-links a { font-size: 11px; padding: 4px 8px; }
       .main { padding: 0 10px; }
 
       /* ── cards themselves ── */
@@ -836,7 +808,8 @@
 
   <!-- Orca Pod strip -->
   <div class="orca-pod">
-    <div class="orca-pod-label">&#x1F42C; More from the Orca Pod</div>
+    <a href="https://keiko-dev-lcai.github.io/orcapod/" target="_blank">🐬 OrcaPod — All our apps</a>
+  </div>
     <div class="orca-pod-links">
       <a href="https://smartcontractexplainer.xyz" target="_blank">Smart Contract Explainer</a>
       <a href="https://emojisandstickers.xyz" target="_blank">Emojis &amp; Stickers</a>
