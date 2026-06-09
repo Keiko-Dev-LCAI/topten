@@ -1205,8 +1205,22 @@
           '<div class="analysis-body" id="body-' + cardId + '">' +
             esc(a.analysis || "No detailed analysis available.") +
           '</div>' +
+          '<div style="padding:10px 16px 14px;text-align:right">' +
+            '<button onclick="event.stopPropagation();shareTopTenToLightChat(' + JSON.stringify(item.name||'') + ',' + score + ',' + JSON.stringify(rec) + ')" style="background:rgba(155,127,232,0.12);border:1px solid rgba(155,127,232,0.35);color:#9b7fe8;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🔗 Share to LightChat</button>' +
+          '</div>' +
         '</div>'
       );
+    }
+
+    // ─── Share to LightChat ────────────────────────────────────────────
+    function shareTopTenToLightChat(tokenName, score, rec) {
+      var params = new URLSearchParams({
+        app: 'topten',
+        title: tokenName,
+        desc: 'OrcaScore: ' + score + '/10 — ' + rec,
+        url: 'https://keiko-dev-lcai.github.io/topten'
+      });
+      window.location.href = 'https://lightchat.chat/share?' + params.toString();
     }
 
     // ─── Toggle expand ────────────────────────────────────────────────
