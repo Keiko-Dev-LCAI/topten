@@ -1252,7 +1252,33 @@
         var list     = document.getElementById("cardList");
         var isRefreshing = data.status === "refreshing";
 
+        // Cache good data so we can always show something
+        if (presales.length > 0) {
+          try { localStorage.setItem('tt_last_data', JSON.stringify({presales: presales, last_updated: data.last_updated, source: data.source})); } catch(e) {}
+        }
+
         if (presales.length === 0 && !isRefreshing) {
+          // Try to show the last cached analysis instead of blank
+          var cached = null;
+          try { cached = JSON.parse(localStorage.getItem('tt_last_data') || 'null'); } catch(e) {}
+          if (cached && cached.presales && cached.presales.length > 0) {
+            document.getElementById("errorState").style.display = "none";
+            cached.presales.sort(function(a, b) {
+              return (parseInt((b.analysis||{}).score)||0) - (parseInt((a.analysis||{}).score)||0);
+            });
+            list.innerHTML = cached.presales.map(function(p, i) { return renderCard(p, i); }).join("");
+            document.getElementById("lastUpdated").textContent =
+              "Last analyzed: " + formatTimestamp(cached.last_updated) + " — fresh run at 6 AM Eastern";
+            if (cached.source && cached.source !== "none") {
+              var srcMap2 = { dexscreener: "Data: DexScreener", pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
+              var srcBadge2 = document.getElementById("sourceBadge");
+              srcBadge2.textContent = srcMap2[cached.source] || cached.source;
+              srcBadge2.style.display = "inline-block";
+            }
+            // Silently trigger a background refresh so fresh data arrives automatically
+            fetch(RAILWAY_URL + "/api/refresh", { method: "POST" }).catch(function(){});
+            return;
+          }
           list.innerHTML = "";
           document.getElementById("errorState").style.display = "block";
           document.getElementById("lastUpdated").textContent =
@@ -1294,9 +1320,22 @@
       .catch(function(err) {
         console.error("Load failed:", err);
         if (!isPolling) {
-          document.getElementById("cardList").innerHTML = "";
-          document.getElementById("errorState").style.display = "block";
-          document.getElementById("lastUpdated").textContent = "Could not connect to analysis server.";
+          // Show cached data on network error instead of blank
+          var cached = null;
+          try { cached = JSON.parse(localStorage.getItem('tt_last_data') || 'null'); } catch(e) {}
+          if (cached && cached.presales && cached.presales.length > 0) {
+            document.getElementById("errorState").style.display = "none";
+            cached.presales.sort(function(a, b) {
+              return (parseInt((b.analysis||{}).score)||0) - (parseInt((a.analysis||{}).score)||0);
+            });
+            document.getElementById("cardList").innerHTML = cached.presales.map(function(p, i) { return renderCard(p, i); }).join("");
+            document.getElementById("lastUpdated").textContent =
+              "Last analyzed: " + formatTimestamp(cached.last_updated) + " — server offline";
+          } else {
+            document.getElementById("cardList").innerHTML = "";
+            document.getElementById("errorState").style.display = "block";
+            document.getElementById("lastUpdated").textContent = "Could not connect to analysis server.";
+          }
         }
       });
     }
