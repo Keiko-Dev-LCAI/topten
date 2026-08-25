@@ -261,12 +261,12 @@
     .token-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .token-name {
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 700;
       color: #fff;
       white-space: nowrap;
@@ -308,22 +308,26 @@
     /* Recommendation badge */
     .rec-badge {
       display: inline-block;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       letter-spacing: 0.1em;
-      padding: 5px 16px;
+      padding: 4px 14px;
       border-radius: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
     .rec-BUY   { background: rgba(34,197,94,0.2);  color: var(--green); border: 1px solid rgba(34,197,94,0.4); }
     .rec-WATCH { background: rgba(234,179,8,0.2);  color: var(--yellow); border: 1px solid rgba(234,179,8,0.4); }
     .rec-AVOID { background: rgba(239,68,68,0.2);  color: var(--red);   border: 1px solid rgba(239,68,68,0.4); }
 
     .verdict {
-      font-size: 16px;
+      font-size: 14px;
       color: var(--muted);
       font-style: italic;
-      line-height: 1.5;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     /* Flags section */
@@ -407,14 +411,19 @@
 
     .analysis-body {
       display: none;
-      padding: 20px 28px;
-      font-size: 16px;
+      padding: 14px 20px 16px;
+      font-size: 15px;
       color: var(--muted);
       line-height: 1.7;
       background: var(--bg3);
       border-top: 1px solid var(--border);
     }
     .analysis-body.open { display: block; }
+    /* Content moved into the collapsible section: strip the standalone paddings */
+    .analysis-body .flags-row { padding: 0 0 12px; }
+    .analysis-body .details-strip { padding: 12px 0 0; }
+    .analysis-body .dex-link-row { padding: 10px 0 0; }
+    .analysis-body .analysis-text { padding-top: 12px; border-top: 1px solid var(--border); margin-top: 4px; }
 
     /* ─── AIVM badge ─── */
     .aivm-badge { flex-shrink: 0; text-align: center; margin: 10px 0 8px; }
@@ -693,19 +702,26 @@
       .error-state p { font-size: 15px; }
     }
 
-    /* ── Orca Pod footer link ── */
-    .orca-pod { text-align: center; padding: 8px 20px; border-top: 1px solid rgba(255,255,255,0.07); font-size: 13px; flex-shrink: 0; }
-    .orca-pod a { color: var(--teal); text-decoration: none; font-weight: 600; letter-spacing: 0.02em; }
-    .orca-pod a:hover { text-decoration: underline; }
-    /* ── Compact site footer ── */
-    .site-footer { text-align:center; padding:8px 16px 10px; font-size:12.5px; line-height:1.9; opacity:0.8; }
-    .site-footer a { text-decoration:none; font-weight:600; }
-    .footer-disclaimer { text-align:center; font-size:11.5px; color:#fbbf6b; opacity:0.9; padding:6px 16px 2px; }
-    .footer-credit { text-align:center; font-size:11px; opacity:0.5; padding:2px 16px 8px; }
-    .keiko-android-install { text-align:center; padding:10px 16px 12px; border-top:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.25); }
-  .keiko-android-install a { display:inline-block; background:#00d4ff; color:#000; font-weight:800; font-size:15px; padding:10px 18px; border-radius:10px; text-decoration:none; }
-  .keiko-android-install a:hover { opacity:0.9; }
-  .keiko-android-install p { margin-top:6px; font-size:12px; opacity:0.65; }
+    /* ── One-line footer bar ── */
+    .footer-bar {
+      flex-shrink: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 3px 14px;
+      padding: 6px 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .footer-bar a { text-decoration: none; font-weight: 600; color: var(--teal); white-space: nowrap; }
+    .footer-bar a:hover { text-decoration: underline; }
+    .footer-bar .fb-disc { color: #fbbf6b; font-weight: 600; white-space: nowrap; }
+    .footer-bar .fb-credit { color: var(--muted); opacity: 0.55; white-space: nowrap; }
+    @media (max-width: 640px) {
+      .footer-bar { gap: 2px 10px; padding: 5px 10px; font-size: 11px; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#f59e0b">
@@ -812,13 +828,6 @@
     </div><!-- end tab-content-analyze -->
 
   </div><!-- end main -->
-
-  <div class="orca-pod">
-    <a href="https://keiko-dev-lcai.github.io/orcapod/" target="_blank">🐬 OrcaPod — All our apps</a>
-    &nbsp;·&nbsp;
-    <a href="https://orcamail.ai" target="_blank" style="color:#9b7fe8;">📢 Advertise with us</a>
-  </div>
-
 
   <script>
     var RAILWAY_URL    = "https://web-production-5e7ae.up.railway.app";
@@ -1235,30 +1244,27 @@
             '</div>' +
           '</div>' +
 
-          '<div class="flags-row">' +
-            '<div class="flags-col green">' +
-              '<h4>&#x2705; GREEN FLAGS</h4>' +
-              '<ul>' + greenItems + '</ul>' +
-            '</div>' +
-            '<div class="flags-col red">' +
-              '<h4>&#x26A0;&#xFE0F; RED FLAGS</h4>' +
-              '<ul>' + redItems + '</ul>' +
-            '</div>' +
-          '</div>' +
-
-          (detailsHTML ? '<div class="details-strip">' + detailsHTML + '</div>' : "") +
-
-          (item.dex_url ? '<div class="dex-link-row"><a href="' + esc(item.dex_url) + '" target="_blank" rel="noopener" class="dex-link">&#x1F4C8; View on DexScreener &#x2192;</a></div>' : '') +
-
           '<button class="expand-toggle" id="toggle-' + cardId + '" onclick="toggleAnalysis(\'' + cardId + '\')">' +
             '<span class="arrow">&#x25BC;</span>' +
-            'Full Analysis' +
+            'Flags, stats &amp; full analysis' +
           '</button>' +
           '<div class="analysis-body" id="body-' + cardId + '">' +
-            esc(a.analysis || "No detailed analysis available.") +
-          '</div>' +
-          '<div style="padding:10px 16px 14px;text-align:right">' +
-            '<button onclick="event.stopPropagation();shareTopTenToLightChat(' + JSON.stringify(item.name||'') + ',' + score + ',' + JSON.stringify(rec) + ')" style="background:rgba(155,127,232,0.12);border:1px solid rgba(155,127,232,0.35);color:#9b7fe8;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🔗 Share to LightChat</button>' +
+            '<div class="flags-row">' +
+              '<div class="flags-col green">' +
+                '<h4>&#x2705; GREEN FLAGS</h4>' +
+                '<ul>' + greenItems + '</ul>' +
+              '</div>' +
+              '<div class="flags-col red">' +
+                '<h4>&#x26A0;&#xFE0F; RED FLAGS</h4>' +
+                '<ul>' + redItems + '</ul>' +
+              '</div>' +
+            '</div>' +
+            (detailsHTML ? '<div class="details-strip">' + detailsHTML + '</div>' : "") +
+            (item.dex_url ? '<div class="dex-link-row"><a href="' + esc(item.dex_url) + '" target="_blank" rel="noopener" class="dex-link">&#x1F4C8; View on DexScreener &#x2192;</a></div>' : '') +
+            '<div class="analysis-text">' + esc(a.analysis || "No detailed analysis available.") + '</div>' +
+            '<div style="padding:12px 0 2px;text-align:right">' +
+              '<button onclick="event.stopPropagation();shareTopTenToLightChat(' + JSON.stringify(item.name||'') + ',' + score + ',' + JSON.stringify(rec) + ')" style="background:rgba(155,127,232,0.12);border:1px solid rgba(155,127,232,0.35);color:#9b7fe8;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🔗 Share to LightChat</button>' +
+            '</div>' +
           '</div>' +
         '</div>'
       );
@@ -1434,20 +1440,17 @@
       })
       .catch(function() {});
   </script>
-<!-- Compact footer: links on fewer lines + always-visible disclaimer -->
-<div class="footer-disclaimer">&#9888;&#65039; Not financial advice. Presales are high-risk — always DYOR before investing.</div>
-<div class="site-footer">
+<!-- One-line footer: everything on a single wrapping row -->
+<div class="footer-bar">
+  <span class="fb-disc">&#9888;&#65039; Not financial advice — DYOR</span>
+  <a href="https://keiko-dev-lcai.github.io/orcapod/" target="_blank" rel="noopener">🐬 OrcaPod</a>
+  <a href="https://orcamail.ai" target="_blank" rel="noopener" style="color:#9b7fe8;">📢 Advertise</a>
   <a href="https://x.com/KeikoDevLCAI" target="_blank" rel="noopener" style="color:#9b7fe8;">𝕏 @KeikoDevLCAI</a>
-  &nbsp;·&nbsp;
   <a href="https://lightdex.app/" target="_blank" rel="noopener" style="color:#7ec8e3;">Get LCAI ↗</a>
-  &nbsp;·&nbsp;
   <a href="#" onclick="(function(){navigator.clipboard.writeText('0xA3a653a8cBA0710ff57Ac34E2278C603B4259FD3').catch(function(){});window.open('https://orcamail.ai','_blank');var t=document.getElementById('_dctoast');if(t){t.style.display='block';setTimeout(function(){t.style.display='none'},3000);}})();return false;" style="color:#6c47ff;">Contact Dev 🐬</a>
+  <a href="TopTen.apk" download title="Download → open file → Install. Allow unknown apps if asked." style="color:#00d4ff;font-weight:800;">📲 Android App</a>
+  <span class="fb-credit">⚡ Powered by Lightchain AIVM</span>
 </div>
-<div class="footer-credit">⚡ Powered by Lightchain AIVM</div>
 <div id="_dctoast" style="display:none;position:fixed;bottom:24px;right:24px;background:#6c47ff;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;box-shadow:0 2px 16px rgba(0,0,0,.4);">Wallet copied! Opening OrcaMail&#x2026;</div>
-<div class="keiko-android-install">
-  <a href="TopTen.apk" download>📲 Download Android App</a>
-  <p>Download → open file → Install. Allow unknown apps if asked.</p>
-</div>
 </body>
 </html>
