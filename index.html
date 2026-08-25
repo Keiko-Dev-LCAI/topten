@@ -56,25 +56,25 @@
     .header {
       flex-shrink: 0;
       text-align: center;
-      padding: 18px 24px 12px;
+      padding: 10px 24px 6px;
       background: linear-gradient(180deg, #0d1424 0%, var(--bg) 100%);
     }
     .header h1 {
-      font-size: 2.4rem;
+      font-size: 1.7rem;
       font-weight: 800;
       color: #fff;
       letter-spacing: -0.5px;
     }
     .header .subtitle {
-      font-size: 18px;
+      font-size: 14px;
       color: var(--teal);
-      margin-top: 8px;
+      margin-top: 3px;
       font-weight: 500;
     }
     .header .last-updated {
-      font-size: 15px;
+      font-size: 13px;
       color: var(--muted);
-      margin-top: 10px;
+      margin-top: 5px;
     }
     .header .last-updated.live {
       display: inline-block;
@@ -138,7 +138,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 14px 0 12px;
+      margin: 10px 0 8px;
     }
 
     /* ─── Tab switcher ─── */
@@ -170,12 +170,12 @@
     /* ─── Section label ─── */
     .section-label {
       flex-shrink: 0;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
-      margin: 0 0 16px;
+      margin: 0 0 10px;
     }
 
     /* ─── Error state ─── */
@@ -217,7 +217,7 @@
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: var(--card-r);
-      margin-bottom: 18px;
+      margin-bottom: 10px;
       overflow: hidden;
       transition: border-color 0.2s;
     }
@@ -225,28 +225,28 @@
 
     .card-top {
       display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 26px 28px 20px;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px 14px;
     }
 
     /* Score circle */
     .score-circle {
       flex-shrink: 0;
-      width: 96px;
-      height: 96px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 34px;
+      font-size: 22px;
       line-height: 1;
       border: 3px solid transparent;
     }
     .score-circle .score-label {
-      font-size: 13px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.04em;
       margin-top: 2px;
@@ -694,10 +694,15 @@
     }
 
     /* ── Orca Pod footer link ── */
-    .orca-pod { text-align: center; padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.07); font-size: 13px; flex-shrink: 0; }
+    .orca-pod { text-align: center; padding: 8px 20px; border-top: 1px solid rgba(255,255,255,0.07); font-size: 13px; flex-shrink: 0; }
     .orca-pod a { color: var(--teal); text-decoration: none; font-weight: 600; letter-spacing: 0.02em; }
     .orca-pod a:hover { text-decoration: underline; }
-    .keiko-android-install { text-align:center; padding:12px 16px 14px; border-top:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.25); }
+    /* ── Compact site footer ── */
+    .site-footer { text-align:center; padding:8px 16px 10px; font-size:12.5px; line-height:1.9; opacity:0.8; }
+    .site-footer a { text-decoration:none; font-weight:600; }
+    .footer-disclaimer { text-align:center; font-size:11.5px; color:#fbbf6b; opacity:0.9; padding:6px 16px 2px; }
+    .footer-credit { text-align:center; font-size:11px; opacity:0.5; padding:2px 16px 8px; }
+    .keiko-android-install { text-align:center; padding:10px 16px 12px; border-top:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.25); }
   .keiko-android-install a { display:inline-block; background:#00d4ff; color:#000; font-weight:800; font-size:15px; padding:10px 18px; border-radius:10px; text-decoration:none; }
   .keiko-android-install a:hover { opacity:0.9; }
   .keiko-android-install p { margin-top:6px; font-size:12px; opacity:0.65; }
@@ -808,18 +813,12 @@
 
   </div><!-- end main -->
 
-  <!-- AIVM badge -->
-  <div class="aivm-badge">
-    <span>&#x26A1; Powered by Lightchain AIVM</span>
-  </div>
-
-
   <div class="orca-pod">
     <a href="https://keiko-dev-lcai.github.io/orcapod/" target="_blank">🐬 OrcaPod — All our apps</a>
     &nbsp;·&nbsp;
     <a href="https://orcamail.ai" target="_blank" style="color:#9b7fe8;">📢 Advertise with us</a>
   </div>
-    
+
 
   <script>
     var RAILWAY_URL    = "https://web-production-5e7ae.up.railway.app";
@@ -1435,11 +1434,16 @@
       })
       .catch(function() {});
   </script>
-<!-- X HANDLE -->
-<div style="text-align:center;padding:6px 16px 12px;font-size:13px;opacity:0.65;"><a href="https://x.com/KeikoDevLCAI" target="_blank" rel="noopener" style="color:#9b7fe8;text-decoration:none;font-weight:600;">𝕏 @KeikoDevLCAI</a></div>
-<div style="text-align:center;padding:4px 16px 12px;font-size:13px;opacity:0.75;"><a href="https://lightdex.app/" target="_blank" rel="noopener" style="color:#7ec8e3;text-decoration:none;font-weight:600;">Get LCAI · LCAI Swap ↗</a></div>
-<!-- dev contact footer -->
-<div style="text-align:center;padding:8px 16px 16px;font-size:13px;opacity:0.5;">Questions or ideas? <a href="#" onclick="(function(){navigator.clipboard.writeText('0xA3a653a8cBA0710ff57Ac34E2278C603B4259FD3').catch(function(){});window.open('https://orcamail.ai','_blank');var t=document.getElementById('_dctoast');if(t){t.style.display='block';setTimeout(function(){t.style.display='none'},3000);}})();return false;" style="color:#6c47ff;font-weight:600;text-decoration:none;">Contact Developer via OrcaMail &#x1F42C;</a></div>
+<!-- Compact footer: links on fewer lines + always-visible disclaimer -->
+<div class="footer-disclaimer">&#9888;&#65039; Not financial advice. Presales are high-risk — always DYOR before investing.</div>
+<div class="site-footer">
+  <a href="https://x.com/KeikoDevLCAI" target="_blank" rel="noopener" style="color:#9b7fe8;">𝕏 @KeikoDevLCAI</a>
+  &nbsp;·&nbsp;
+  <a href="https://lightdex.app/" target="_blank" rel="noopener" style="color:#7ec8e3;">Get LCAI ↗</a>
+  &nbsp;·&nbsp;
+  <a href="#" onclick="(function(){navigator.clipboard.writeText('0xA3a653a8cBA0710ff57Ac34E2278C603B4259FD3').catch(function(){});window.open('https://orcamail.ai','_blank');var t=document.getElementById('_dctoast');if(t){t.style.display='block';setTimeout(function(){t.style.display='none'},3000);}})();return false;" style="color:#6c47ff;">Contact Dev 🐬</a>
+</div>
+<div class="footer-credit">⚡ Powered by Lightchain AIVM</div>
 <div id="_dctoast" style="display:none;position:fixed;bottom:24px;right:24px;background:#6c47ff;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;box-shadow:0 2px 16px rgba(0,0,0,.4);">Wallet copied! Opening OrcaMail&#x2026;</div>
 <div class="keiko-android-install">
   <a href="TopTen.apk" download>📲 Download Android App</a>
