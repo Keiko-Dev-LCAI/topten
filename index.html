@@ -864,6 +864,12 @@
       if (u > 0) localStorage.setItem(FREE_USES_KEY, String(u - 1));
     }
 
+    // Sync local display to the server's authoritative count.
+    function setFreeUses(n) {
+      var v = Math.max(0, parseInt(n));
+      if (!isNaN(v)) localStorage.setItem(FREE_USES_KEY, String(v));
+    }
+
     function updateFreeCounter() {
       var uses = getFreeUses();
       var txt  = document.getElementById("freeCountText");
@@ -1043,6 +1049,16 @@
         document.getElementById("analyzeLoading").style.display = "none";
         document.getElementById("analyzeBtn").disabled = false;
 
+        // Server enforces the free-tier limit; trust its count when present.
+        if (typeof data.free_remaining === "number") setFreeUses(data.free_remaining);
+
+        if (data.limit_reached) {
+          updateFreeCounter();
+          document.getElementById("walletGate").style.display = "block";
+          document.getElementById("analyzeInputCard").style.display = "none";
+          return;
+        }
+
         if (!data.success) {
           var errEl = document.getElementById("analyzeError");
           errEl.innerHTML =
@@ -1052,7 +1068,8 @@
           return;
         }
 
-        decrementFreeUses();
+        // Only fall back to the local decrement if the server didn't report a count.
+        if (typeof data.free_remaining !== "number") decrementFreeUses();
         updateFreeCounter();
 
         var resultEl = document.getElementById("analyzeResult");
@@ -1130,6 +1147,21 @@
       } catch (e) { return iso; }
     }
 
+    // ─── Relative "time ago" ─────────────────────────────────────────
+    function fmtAgo(iso) {
+      if (!iso) return "just now";
+      try {
+        var then = new Date(iso).getTime();
+        if (isNaN(then)) return formatTimestamp(iso);
+        var mins = Math.max(0, Math.floor((Date.now() - then) / 60000));
+        if (mins < 1)   return "just now";
+        if (mins < 60)  return mins + "m ago";
+        var hrs = Math.floor(mins / 60);
+        if (hrs < 24)   return hrs + "h ago";
+        return Math.floor(hrs / 24) + "d ago";
+      } catch (e) { return formatTimestamp(iso); }
+    }
+
     // ─── Render a single Top 10 card ─────────────────────────────────
     function renderCard(item, index) {
       var a          = item.analysis || {};
@@ -1168,6 +1200,21 @@
       var chainLabel = String(item.chain || "").length > 0
                        ? String(item.chain).toUpperCase().slice(0, 12) : "MULTI";
 
+      // Listing-type badge: honest about what each card is.
+      var ltMap = {
+        new_launch: { t: "🆕 New Launch", c: "#00d18f" },
+        boosted:    { t: "🚀 Boosted",    c: "#e0a020" },
+        trending:   { t: "🔥 Trending",   c: "#e0576f" }
+      };
+      var lt = ltMap[item.listing_type] || ltMap.new_launch;
+      var listingBadge = '<span class="chain-badge" style="border-color:' + lt.c + ';color:' + lt.c + '">' + lt.t + '</span>';
+
+      // Analysis-depth badge: quick scan (rule-based) vs AI-verified (AIVM).
+      var aiVerified = !!a.ai_analyzed;
+      var depthBadge = aiVerified
+        ? '<span class="chain-badge" style="border-color:#9b7fe8;color:#9b7fe8" title="Analyzed by Lightchain AIVM">🧠 AI-verified</span>'
+        : '<span class="chain-badge" style="border-color:#7a8699;color:#9aa7bd" title="Fast rule-based score — AIVM upgrade pending">⚡ Quick scan</span>';
+
       return (
         '<div class="card">' +
           '<div class="card-top">' +
@@ -1180,6 +1227,8 @@
                 '<span class="token-name">' + esc(item.name) + '</span>' +
                 '<span class="token-symbol">' + esc(item.symbol) + '</span>' +
                 '<span class="chain-badge">' + esc(chainLabel) + '</span>' +
+                listingBadge +
+                depthBadge +
               '</div>' +
               '<span class="rec-badge rec-' + esc(rec) + '">' + esc(rec) + '</span>' +
               (a.token_type ? '<span class="type-badge">' + esc(a.token_type) + '</span>' : '') +
@@ -1254,7 +1303,7 @@
       .then(function(data) {
         var presales = data.presales || [];
         var list     = document.getElementById("cardList");
-        var isRefreshing = data.status === "refreshing";
+        var isRefreshing = data.status === "refreshing" || data.refresh_running === true;
 
         // Cache good data so we can always show something
         if (presales.length > 0) {
@@ -1274,7 +1323,7 @@
             document.getElementById("lastUpdated").textContent =
               "Last analyzed: " + formatTimestamp(cached.last_updated) + " — fresh run at 6 AM Eastern";
             if (cached.source && cached.source !== "none") {
-              var srcMap2 = { dexscreener: "Data: DexScreener", pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
+              var srcMap2 = { dexscreener_new: "Data: New Launches", "dexscreener_new+boosted": "Data: New + Boosted", dexscreener_boosted: "Data: Boosted", dexscreener: "Data: DexScreener", pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
               var srcBadge2 = document.getElementById("sourceBadge");
               srcBadge2.textContent = srcMap2[cached.source] || cached.source;
               srcBadge2.style.display = "inline-block";
@@ -1300,23 +1349,28 @@
 
         var lu = document.getElementById("lastUpdated");
         if (isRefreshing) {
-          var aiDone = presales.filter(function(p) { return p.analysis && p.analysis.ai_analyzed; }).length;
-          var now = new Date();
-          var timeStr = now.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit"});
-          lu.textContent = "⚡ AI analyzing... " + aiDone + " of 10 upgraded — checked " + timeStr;
+          if (presales.length === 0) {
+            if (list.querySelector(".card-skeleton") === null) renderSkeletons(10);
+            lu.textContent = "🔎 Finding today's newest presales…";
+          } else {
+            var aiDone = presales.filter(function(p) { return p.analysis && p.analysis.ai_analyzed; }).length;
+            var now = new Date();
+            var timeStr = now.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit"});
+            lu.textContent = "⚡ AI analyzing… " + aiDone + " of " + presales.length + " upgraded — checked " + timeStr;
+          }
           lu.classList.add("live");
-          // Poll every 10s while refresh is running
+          // Auto-poll while refresh is running so cards appear the moment data lands
           if (_pollTimer) clearTimeout(_pollTimer);
-          _pollTimer = setTimeout(function() { loadData(true); }, 10000);
+          _pollTimer = setTimeout(function() { loadData(true); }, presales.length === 0 ? 8000 : 10000);
         } else {
           if (_pollTimer) { clearTimeout(_pollTimer); _pollTimer = null; }
-          lu.textContent = "Last analyzed: " + formatTimestamp(data.last_updated);
+          lu.textContent = "Updated " + fmtAgo(data.last_updated);
           lu.classList.remove("live");
         }
 
         var srcBadge = document.getElementById("sourceBadge");
         if (data.source && data.source !== "none") {
-          var srcMap = { dexscreener: "Data: DexScreener", pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
+          var srcMap = { dexscreener_new: "Data: New Launches", "dexscreener_new+boosted": "Data: New + Boosted", dexscreener_boosted: "Data: Boosted", dexscreener: "Data: DexScreener", pinksale: "Data: Pinksale", coingecko_trending: "Data: CoinGecko Trending" };
           srcBadge.textContent = srcMap[data.source] || data.source;
           srcBadge.style.display = "inline-block";
         }
@@ -1368,6 +1422,18 @@
     // ─── Init ─────────────────────────────────────────────────────────
     updateFreeCounter();
     loadData();
+
+    // Sync free-analysis count from the server (authoritative) so the display
+    // is correct even if localStorage was cleared or is out of date.
+    fetch(RAILWAY_URL + "/api/free-status", { cache: "no-cache" })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d && typeof d.free_remaining === "number") {
+          setFreeUses(d.free_remaining);
+          updateFreeCounter();
+        }
+      })
+      .catch(function() {});
   </script>
 <!-- X HANDLE -->
 <div style="text-align:center;padding:6px 16px 12px;font-size:13px;opacity:0.65;"><a href="https://x.com/KeikoDevLCAI" target="_blank" rel="noopener" style="color:#9b7fe8;text-decoration:none;font-weight:600;">𝕏 @KeikoDevLCAI</a></div>
